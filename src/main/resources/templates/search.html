@@ -6,9 +6,10 @@
     <title>Search</title>
 </head>
 <body>
+    <!-- <p th:utext="${pageNumber}"></p> -->
     <form th:action="@{/search}" method="post">
-        <label for="searchBar">Search for a food:</label>
-        <input type="text" id="searchBar" name="searchBar">
+        <label for="searchTerm">Search for a food:</label>
+        <input type="text" id="searchTerm" name="searchTerm">
         <button type="submit">Search</button>
     </form>
     <br>
@@ -21,6 +22,7 @@
                     <th>Brand</th>
                     <th>Basic Nutrional Informaion</th>
                     <th>For more information</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,10 +34,17 @@
                         <td>
                             <a th:href="@{${food.url}}" th:utext="${food.url}"></a>
                         </td>
+                        <td>
+                            <a th:href="@{/newEntry/add/{id} (id=${food.id})}">Add to Entry</a>
+                        </td>
                     </tr>
                 </span>
             </tbody>
         </table>
+        <span th:unless="${pageNumber} == '0'">
+            <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
+        </span>
+        <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
     </span>
 </body>
 </html>

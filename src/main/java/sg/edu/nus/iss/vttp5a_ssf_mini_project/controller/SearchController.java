@@ -25,16 +25,22 @@ public class SearchController {
     @GetMapping()
     public ModelAndView getSearch() {
         ModelAndView mav = new ModelAndView("search");
-        mav.addObject("pageNumber", "0");
 
         return mav;
     }
 
     @PostMapping()
-    public ModelAndView showSearchResults(@RequestParam(name = "searchBar") String searchTerm, @ModelAttribute String pageNumber) {
-        System.out.println("search term: " + searchTerm);
-        System.out.println("page number: " + pageNumber);
+    public ModelAndView showSearchResults(@RequestParam String searchTerm) {
+        
+        ModelAndView mav = new ModelAndView("redirect:/search/{searchTerm}/{pageNumber}");
+        mav.addObject("pageNumber", "0");
+        mav.addObject("searchTerm", searchTerm);
 
+        return mav;
+    }
+
+    @GetMapping("/{searchTerm}/{pageNumber}")
+    public ModelAndView nextNpreviousPage(@PathVariable String searchTerm, @PathVariable String pageNumber) {
         ModelAndView mav = new ModelAndView("search");
         List<Food> foodList = searchService.getSearch(searchTerm, pageNumber);
         mav.addObject("foods", foodList);
