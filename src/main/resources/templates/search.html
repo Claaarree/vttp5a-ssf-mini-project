@@ -11,6 +11,9 @@
         <label for="searchTerm">Search for a food:</label>
         <input type="text" id="searchTerm" name="searchTerm">
         <button type="submit">Search</button>
+        <span th:if="${blankError}">
+            <p th:utext="${blankError}"></p>
+        </span>
     </form>
     <br>
     <br>

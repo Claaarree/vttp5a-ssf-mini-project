@@ -5,10 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,10 +29,16 @@ public class SearchController {
 
     @PostMapping()
     public ModelAndView showSearchResults(@RequestParam String searchTerm) {
+        ModelAndView mav = new ModelAndView();
+        if (searchTerm.isBlank()){
+            mav.setViewName("search");
+            mav.addObject("blankError", "Search Term cannot be blank!");
+        } else {
+            mav.setViewName("redirect:/search/{searchTerm}/{pageNumber}");
+            mav.addObject("pageNumber", "0");
+            mav.addObject("searchTerm", searchTerm);
+        }
         
-        ModelAndView mav = new ModelAndView("redirect:/search/{searchTerm}/{pageNumber}");
-        mav.addObject("pageNumber", "0");
-        mav.addObject("searchTerm", searchTerm);
 
         return mav;
     }
