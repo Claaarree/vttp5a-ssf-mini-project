@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -17,11 +18,16 @@ public class Entry {
     
     @NotNull(message = "Please select the date of consumption!")
     @PastOrPresent(message = "Have you eaten yet? The date shouldn't be in the future!")
-    private Date entryDate;
+    private Date consumptionDate;
 
     @NotEmpty(message = "Please select the time of consumption!")
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime timeOfConsumption;
+    private LocalTime consumptionTime;
+
+    // @NotEmpty(message = "Please select date and time of consuption!")
+    // @PastOrPresent(message = "Have you eaten yet? The date and time shouldn't be in the future!")
+    // @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm")
+    // private LocalDateTime consumptionDateTime;
 
     @NotEmpty(message = "Please add at least one food item eaten!")
     private List<Food> foodsConsumed;
@@ -38,20 +44,20 @@ public class Entry {
         this.entryId = entryId;
     }
 
-    public Date getEntryDate() {
-        return entryDate;
+    public Date getConsumptionDate() {
+        return consumptionDate;
     }
 
-    public void setEntryDate(Date entryDate) {
-        this.entryDate = entryDate;
+    public void setConsumptionDate(Date consumptionDate) {
+        this.consumptionDate = consumptionDate;
     }
 
-    public LocalTime getTimeOfConsumption() {
-        return timeOfConsumption;
+    public LocalTime getConsumptionTime() {
+        return consumptionTime;
     }
 
-    public void setTimeOfConsumption(LocalTime timeOfConsumption) {
-        this.timeOfConsumption = timeOfConsumption;
+    public void setConsumptionTime(LocalTime consumptionTime) {
+        this.consumptionTime = consumptionTime;
     }
 
     public List<Food> getFoodsConsumed() {
@@ -61,5 +67,13 @@ public class Entry {
     public void setFoodsConsumed(List<Food> foodsConsumed) {
         this.foodsConsumed = foodsConsumed;
     }
+
+    // public LocalDateTime getConsumptionDateTime() {
+    //     return consumptionDateTime;
+    // }
+
+    // public void setConsumptionDateTime(LocalDateTime consumptionDateTime) {
+    //     this.consumptionDateTime = consumptionDateTime;
+    // }
 
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Entry</title>
+</head>
+<body>
+    <form method="post" th:action="@{/entries/add}" th:object="${entry}">
+        <div>
+            <label for="entryId">Entry ID:</label>
+            <input type="text" id="entryId" th:field="*{entryId}" readonly>
+        </div>
+        <!-- <div>
+            <label for="consumptionDateTime">Date of Consumption:</label>
+            <input type="datetime-local" id="consumptionDateTime" th:field="*{consumptionDateTime}">
+        </div> -->
+        <div>
+            <label for="consumptionDate">Date of Consumption:</label>
+            <input type="date" id="consumptionDate" th:field="*{consumptionDate}">
+        </div>
+        <div>
+            <label for="consumptionTime">Time of Consumption:</label>
+            <input type="time" id="consumptionTime" th:field="*{consumptionTime}">
+        </div>
+        <div>
+            <p>Foods Consumed:</p>
+            <p th:if="${#lists.isEmpty(entry.foodsConsumed)}">Start by adding a food you've eaten today!</p>
+            <span th:unless="${#lists.isEmpty(entry.foodsConsumed)}">
+                <ol>
+                    <span th:each="food : ${entry.foodsConsumed}"></span>
+                    <li th:utext="${food.name}"></li>
+                </ol>
+            </span>
+            <a th:href="@{/search}">Search for a food to add here!</a>
+        </div>
+        <br>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>
