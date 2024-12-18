@@ -8,7 +8,7 @@
 <body>
     <!-- <p th:utext="${pageNumber}"></p> -->
     <form th:action="@{/search}" method="post">
-        <label for="searchTerm">Search for a food:</label>
+        <label for="searchTerm">Search for a food and/or brand:</label>
         <input type="text" id="searchTerm" name="searchTerm">
         <button type="submit">Search</button>
         <span th:if="${blankError}">
