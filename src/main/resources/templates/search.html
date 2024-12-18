@@ -10,6 +10,10 @@
     <form th:action="@{/search}" method="post">
         <label for="searchTerm">Search for a food and/or brand:</label>
         <input type="text" id="searchTerm" name="searchTerm">
+        <p th:utext="${entryId}"></p>
+        <span th:if="${entryId}">
+            <input type="text" th:value="${entryId}" name="entryId" hidden>
+        </span>
         <button type="submit">Search</button>
         <span th:if="${blankError}">
             <p th:utext="${blankError}"></p>
@@ -38,16 +42,20 @@
                             <a th:href="@{${food.url}}" th:utext="${food.url}"></a>
                         </td>
                         <td>
-                            <a th:href="@{/newEntry/add/{id} (id=${food.id})}">Add to Entry</a>
+                            <form method="post" th:action="@{/entries/new/{entryId} (entryId=${entryId})}">
+                                <button type="submit" th:value="${food.id}" name="foodToAdd">Add to Entry</button>
+                            </form>
+
+                            <!-- <a th:href="@{/newEntry/add/{id} (id=${food.id})}">Add to Entry</a> -->
                         </td>
                     </tr>
                 </span>
             </tbody>
         </table>
         <span th:unless="${pageNumber} == '0'">
-            <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
+            <a th:href="@{/search/{searchTerm}/{pageNumber}/{entryId} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1, entryId = ${entryId})}">Previous</a>
         </span>
-        <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
+        <a th:href="@{/search/{searchTerm}/{pageNumber}/{entryId} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1, entryId = ${entryId})}">Next</a>
     </span>
 </body>
 </html>

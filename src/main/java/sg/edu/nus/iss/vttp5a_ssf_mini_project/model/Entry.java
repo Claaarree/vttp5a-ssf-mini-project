@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
@@ -23,11 +22,6 @@ public class Entry {
     @NotEmpty(message = "Please select the time of consumption!")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime consumptionTime;
-
-    // @NotEmpty(message = "Please select date and time of consuption!")
-    // @PastOrPresent(message = "Have you eaten yet? The date and time shouldn't be in the future!")
-    // @DateTimeFormat(pattern = "yyyy-MM-ddTHH:mm")
-    // private LocalDateTime consumptionDateTime;
 
     @NotEmpty(message = "Please add at least one food item eaten!")
     private List<Food> foodsConsumed;
@@ -67,13 +61,5 @@ public class Entry {
     public void setFoodsConsumed(List<Food> foodsConsumed) {
         this.foodsConsumed = foodsConsumed;
     }
-
-    // public LocalDateTime getConsumptionDateTime() {
-    //     return consumptionDateTime;
-    // }
-
-    // public void setConsumptionDateTime(LocalDateTime consumptionDateTime) {
-    //     this.consumptionDateTime = consumptionDateTime;
-    // }
 
 }

@@ -17,12 +17,14 @@ public class EntryController {
     public ModelAndView newEntryForm() {
         Entry entry = new Entry();
         String url = UriComponentsBuilder.fromPath("/entries/new")
-                // .pathSegment(entry.getEntryId())
-                .path("/{entryId}")
+                // either one works: path segment adds the / for you
+                .pathSegment("{entryId}")
+                // .path("/{entryId}")
                 .build(entry.getEntryId())
                 .toString();
+               
+        System.out.println(url);
         ModelAndView mav = new ModelAndView("redirect:" + url);
-        // mav.addObject("entry", entry);
 
         return mav;
     }
