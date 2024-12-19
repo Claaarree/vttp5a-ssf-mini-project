@@ -33,8 +33,9 @@
                     <span th:each="food : ${entry.foodsConsumed}"></span>
                     <li th:utext="${food.name}"></li>
                 </ol>
-            </span>
-            <a th:href="@{/search/{entryId} (entryId=${entry.entryId})}">Search for a food to add here!</a>
+            </span>           
+            <!-- <a th:href="@{/search/{entryId} (entryId=${entry.entryId})}">Search for a food to add here!</a> -->
+            <a th:href="@{/search}">Search for a food to add here!</a>
         </div>
         <br>
         <button type="submit">Save</button>

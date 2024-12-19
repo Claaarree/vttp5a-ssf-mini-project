@@ -58,6 +58,12 @@ public class Food {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
+    @Override
+    public String toString() {
+        return "Food [id=" + id + ", name=" + name + ", type=" + type + ", description=" + description + ", url=" + url
+                + ", brand=" + brand + "]";
+    }
     
     
 }
