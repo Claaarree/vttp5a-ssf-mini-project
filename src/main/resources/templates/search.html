@@ -39,7 +39,7 @@
                         <td>
                             <form method="post" th:action="@{/entries/new/{entryId} (entryId=${entryId})}">
                                 <!-- <input th:value="${food}" name="foodToAdd" hidden> -->
-                                <button type="submit" th:object="${food}" name="foodToAdd">Add to Entry</button>
+                                <button type="submit" th:value="${food}" name="foodToAdd">Add to Entry</button>
                             </form>
 
                             <!-- <a th:href="@{/newEntry/add/{id} (id=${food.id})}">Add to Entry</a> -->

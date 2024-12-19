@@ -2,6 +2,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,18 +10,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import ch.qos.logback.core.model.processor.ModelHandlerBase;
 import jakarta.servlet.http.HttpSession;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.EntryService;
 
 @Controller
 @RequestMapping("/entries")
 public class EntryController {
+
+    @Autowired
+    EntryService entryService;
 
     @GetMapping("/new")
     public ModelAndView newEntryForm(HttpSession session) {
@@ -50,15 +53,16 @@ public class EntryController {
     }
     
     @PostMapping("/new/{entryId}")
-    public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> form, HttpSession session) {
-        System.out.println("form is: " + form.keySet());
-        System.out.println("foodToAdd is: " + form.getFirst("foodToAdd").toString());
+    public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> map, HttpSession session) {     
+        Food f = entryService.mapToFoodObject(map);
+        // System.out.println(f.toString() + "in post");
 
-        Food f = new Food();
-        ModelAndView mav = new ModelAndView("redirect:/new/{entryId}");
+        ModelAndView mav = new ModelAndView("redirect:/entries/new/{entryId}");
         Entry entry = (Entry)session.getAttribute("entry");
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
         foodsConsumedList.add(f);
+        entry.setFoodsConsumed(foodsConsumedList);
+
         session.setAttribute("entry", entry);
         mav.addObject("entry", entry);
 

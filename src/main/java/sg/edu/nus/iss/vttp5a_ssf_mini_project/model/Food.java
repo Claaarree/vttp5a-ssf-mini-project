@@ -61,8 +61,8 @@ public class Food {
 
     @Override
     public String toString() {
-        return "Food [id=" + id + ", name=" + name + ", type=" + type + ", description=" + description + ", url=" + url
-                + ", brand=" + brand + "]";
+        return id + "," + name + "," + type + "," + description + "," + url
+                + "," + brand;
     }
     
     

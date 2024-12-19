@@ -557,3 +557,7 @@ video {
 .table {
   display: table;
 }
+
+.hidden {
+  display: none;
+}

@@ -1,6 +1,7 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,8 +24,8 @@ public class Entry {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime consumptionTime;
 
-    @NotEmpty(message = "Please add at least one food item eaten!")
-    private List<Food> foodsConsumed;
+    // @NotEmpty(message = "Please add at least one food item eaten!")
+    private List<Food> foodsConsumed = new ArrayList<>();
 
     public Entry() {
         this.entryId = UUID.randomUUID().toString();
