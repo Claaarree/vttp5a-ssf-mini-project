@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Food</title>
+</head>
+<body>
+    <form method="post" th:action="@{/entries/new/{entryId} (entryId = ${entryId})}" th:object="${food}">
+        <div>
+            <label for="name">Name of Food:</label>
+            <input th:field="*{name}" type="text" id="name">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('name')}" th:error="${#fields.error('name')}"></span>
+        </div>
+        <div>
+            <label for="type">Type:</label>
+            <select th:field="*{type}">
+                <option value="Generic">Generic</option>
+                <option value="Brand">Brand</option>
+            </select>
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('name')}" th:error="${#fields.error('name')}"></span>
+        </div>
+
+    </form>
+    
+</body>
+</html>

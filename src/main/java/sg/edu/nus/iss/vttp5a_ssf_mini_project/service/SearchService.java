@@ -34,13 +34,14 @@ public class SearchService {
         params.add("format", "json");
         params.add("max_results", "20");
         params.add("page_number", pageNumber);
-        // below 2 lines is for v3, v1 no need
-        // params.add("language", "en");
-        // params.add("region", "US");
+        params.add("flag_default_serving", "true");
+        params.add("include_food_attributes", "true");
+        params.add("language", "en");
+        params.add("region", "US");
 
         String url = UriComponentsBuilder.fromUriString(Url.baseUrl)
-                // .path(Url.searchV3)
-                .path(Url.searchV1)
+                .path(Url.searchV3)
+                // .path(Url.searchV1)
                 .queryParams(params)
                 .toUriString();
 
@@ -64,8 +65,9 @@ public class SearchService {
 
         JsonReader jReader = Json.createReader(new StringReader(body));
         JsonObject jObject = jReader.readObject();
-        JsonObject foods = jObject.getJsonObject("foods");
-        JsonArray food = foods.getJsonArray("food");
+        JsonObject foodSearch = jObject.getJsonObject("foods_search");
+        JsonObject results = foodSearch.getJsonObject("results");
+        JsonArray food = results.getJsonArray("food");
 
         for (int i = 0; i < food.size(); i++) {
             JsonObject fJObject = food.getJsonObject(i);
@@ -75,14 +77,50 @@ public class SearchService {
             f.setId(Long.valueOf(fJObject.getString("food_id")));
             f.setName(fJObject.getString("food_name"));
             f.setType(fJObject.getString("food_type"));
-            f.setDescription(fJObject.getString("food_description"));
             f.setUrl(fJObject.getString("food_url"));
-
+            // f.setDescription(fJObject.getString("food_description"));
             if (f.getType().equals("Brand")) {
                 f.setBrand(fJObject.getString("brand_name"));
             } else {
                 f.setBrand("NA");
             }
+
+            List<String> allergensList = new ArrayList<>();
+            List<String> preferencesList = new ArrayList<>();
+            // TODO check if food attributes is null and assign as UNKNOWN!
+            JsonObject foodAttributes = fJObject.getJsonObject("food_attributes");
+
+            // getting allergen information
+            JsonObject allergens = foodAttributes.getJsonObject("allergens");
+            JsonArray allergen = allergens.getJsonArray("allergen");
+            for (int j = 0; j < allergen.size(); j++) {
+                JsonObject allergy = allergen.getJsonObject(j);
+
+                // test out both... not sure which on will work
+                // if (allergy.getString("value").equals("1")){
+                if (allergy.getInt("value") == 1){
+
+                    String a = allergy.getString("name");
+                    allergensList.add(a);
+                }
+            }
+
+            // getting preferences information
+            JsonObject preferences = foodAttributes.getJsonObject("preferences");
+            JsonArray preference = preferences.getJsonArray("preference");
+            for (int k = 0; k < preference.size(); k++) {
+                JsonObject prefer = preference.getJsonObject(k);
+
+                // test out both... not sure which on will work
+                // if (prefer.getString("value").equals("1")) {
+                if (prefer.getInt("value") == 1) {
+
+                    String p = prefer.getString("name");
+                    preferencesList.add(p);
+                }
+            }
+
+
             foodList.add(f);
         }
         return foodList;

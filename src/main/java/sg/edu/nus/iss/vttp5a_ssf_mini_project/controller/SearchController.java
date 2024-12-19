@@ -49,19 +49,19 @@ public class SearchController {
     public ModelAndView nextNpreviousPage(@PathVariable String searchTerm, 
     @PathVariable String pageNumber, HttpSession session) {
         Entry entry = (Entry)session.getAttribute("entry");
-        String entryId = entry.getEntryId();
-
-        System.out.println(entryId + "in get path");
-
+        
+        // System.out.println(entryId + "in get path");
+        
         ModelAndView mav = new ModelAndView("search");
         List<Food> foodList = searchService.getSearch(searchTerm, pageNumber);
         mav.addObject("foods", foodList);
-
-        if(entryId != null) {
+        
+        if(entry != null) {
+            String entryId = entry.getEntryId();
             mav.addObject("entryId", entryId);
         } else {
             Entry e = new Entry();
-            mav.addObject("entryId", entry.getEntryId());
+            mav.addObject("entryId", e.getEntryId());
             session.setAttribute("entry", e);
         }
 

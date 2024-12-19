@@ -1,11 +1,39 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
+import java.util.List;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class Food {
     private Long id;
+    private String customId;
+
+    @NotBlank(message = "Please input a name for the food!")
     private String name;
+
+    @NotBlank(message = "Please choose an approprite food type!")
     private String type;
-    private String description;
+
+    List<String> allergens;
+
+    // for vegetarian or vegan
+    List<String> preferences;
+
+    private Long servingId;
+    private String servingDescription;
+    // units in kcal
+    private Double calories;
+
+    // units in g
+    private Double carbohydrate;
+    private Double protein;
+    private Double fat;
+
     private String url;
+
+    @NotBlank(message = "Please input the brand of the food or NA if the food type is Generic!")
+    @Pattern(regexp = "/[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
     private String brand;
     
     public Food() {
@@ -61,8 +89,16 @@ public class Food {
 
     @Override
     public String toString() {
-        return id + "," + name + "," + type + "," + description + "," + url
+        return id + "," + customId + "," + name + "," + type + "," + description + "," + url
                 + "," + brand;
+    }
+
+    public String getCustomId() {
+        return customId;
+    }
+
+    public void setCustomId(String customId) {
+        this.customId = customId;
     }
     
     
