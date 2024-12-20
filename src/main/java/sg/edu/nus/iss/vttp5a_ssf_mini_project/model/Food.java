@@ -2,8 +2,6 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
 import java.util.List;
 
-import org.springframework.stereotype.Component;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -52,7 +50,6 @@ public class Food {
     @Pattern(regexp = "/[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
     private String brand;
     
-    @NotEmpty(message = "Please input how many servings you have eaten!")
     private Integer quantity;
 
     public Food() {

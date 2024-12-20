@@ -33,8 +33,8 @@ public class EntryController {
         Entry entry = new Entry();
         String url = UriComponentsBuilder.fromPath("/entries/new")
                 // either one works: path segment adds the / for you
-                .pathSegment("{entryId}")
                 // .path("/{entryId}")
+                .pathSegment("{entryId}")
                 .build(entry.getEntryId())
                 .toString();
                
@@ -102,13 +102,11 @@ public class EntryController {
             mav.setViewName("addEntry");
             e.setEntryId(entry.getEntryId());
             e.setFoodsConsumed(entry.getFoodsConsumed());
-            // mav.addObject("entry", e);
-            // mav.setViewName("redirect:/entries/new/{entryId}");
-            // Entry entry = (Entry)session.getAttribute("entry");
-            // mav.addObject("entryId", entry.getEntryId());
+        
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
             mav.setViewName("redirect:/search");
+            // save entry to redis
         }
 
         return mav;

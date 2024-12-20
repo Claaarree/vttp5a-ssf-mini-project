@@ -158,6 +158,9 @@ public class SearchService {
                  allergensList.add(a);
              }
          }
+         if (allergensList.isEmpty()) {
+            allergensList.add("NONE");
+         }
 
          return allergensList;
     }
