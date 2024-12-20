@@ -47,7 +47,7 @@ public class SearchService {
             JsonObject fJObject = food.getJsonObject(i);
 
             Food f = new Food();
-            // f.setId(fJObject.getJsonNumber("food_id").longValueExact());
+            
             f.setId(Long.valueOf(fJObject.getString("food_id")));
             f.setName(fJObject.getString("food_name"));
             f.setType(fJObject.getString("food_type"));
@@ -78,7 +78,7 @@ public class SearchService {
             JsonArray serving = servings.getJsonArray("serving");
             for (int j = 0; j < serving.size(); j++) {
                 JsonObject serve = serving.getJsonObject(j);
-                // if this doesn't work, then get int
+        
                 if (serve.getString("is_default") == null){
                     continue;
                 } else {

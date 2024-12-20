@@ -20,11 +20,16 @@
         <table>
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Brand</th>
-                    <th>Basic Nutrional Informaion</th>
-                    <th>For more information</th>
-                    <th>Action</th>
+                    <th rowspan="2">Name</th>
+                    <th rowspan="2">Brand</th>
+                    <th rowspan="2">Allergens</th>
+                    <th colspan="2">Suitable for</th>
+                    <th rowspan="2">For more information</th>
+                    <th rowspan="2">Action</th>
+                </tr>
+                <tr>
+                    <th>Vegetarians</th>
+                    <th>Vegans</th>
                 </tr>
             </thead>
             <tbody>
@@ -32,7 +37,11 @@
                     <tr>
                         <td th:utext="${food.name}"></td>
                         <td th:utext="${food.brand}"></td>
-                        <td th:utext="${food.description}"></td>
+                        <td th:utext="${food.allergens}"></td>
+                        <td th:if="${#lists.contains(food.preferences, 'Vegetarian')}" th:utext="Y"></td>
+                        <td th:unless="${#lists.contains(food.preferences, 'Vegetarian')}" th:utext="UNKNOWN"></td>
+                        <td th:if="${#lists.contains(food.preferences, 'Vegan')}" th:utext="Y"></td>
+                        <td th:unless="${#lists.contains(food.preferences, 'Vegan')}" th:utext="UNKNOWN"></td>
                         <td>
                             <a th:href="@{${food.url}}" th:utext="${food.url}"></a>
                         </td>
@@ -49,9 +58,9 @@
             </tbody>
         </table>
         <span th:unless="${pageNumber} == '0'">
-            <a th:href="@{/search/{searchTerm}/{pageNumber}/{entryId} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1, entryId = ${entryId})}">Previous</a>
+            <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
         </span>
-        <a th:href="@{/search/{searchTerm}/{pageNumber}/{entryId} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1, entryId = ${entryId})}">Next</a>
+        <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
     </span>
 </body>
 </html>
