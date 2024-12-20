@@ -59,19 +59,33 @@ public class SearchService {
                 f.setBrand("NA");
             }
             
-            List<String> allergensList = new ArrayList<>();
-            List<String> preferencesList = new ArrayList<>();          
+            List<String> allergensList = new ArrayList<>();      
             JsonObject foodAttributes = fJObject.getJsonObject("food_attributes");
             if (foodAttributes != null) {
                 allergensList = getAllergensList(foodAttributes);
-                preferencesList = getPreferenceList(foodAttributes);
+
+                // getting preferences information
+                JsonObject preferences = foodAttributes.getJsonObject("preferences");
+                JsonArray preference = preferences.getJsonArray("preference");
+                for (int k = 0; k < preference.size(); k++) {
+                    JsonObject prefer = preference.getJsonObject(k);
+
+                    if (prefer.getString("value").equals("1")) {
+
+                        String p = prefer.getString("name");
+                        if (p.equals("Vegetarian")){
+                            f.setIsVegetarian(true);
+                        } else if (p.equals("Vegan")) {
+                            f.setIsVegan(true);
+                        }
+                    }
+                }
                 
             } else {
                 allergensList.add("UNKNOWN");
-                preferencesList.add("UNKNOWN");
             }
-            f.setAllergens(allergensList);
-            f.setPreferences(preferencesList);
+            f.setAllergens(allergensList);           
+
 
             // getting macronutrients for default serving
             JsonObject servings = fJObject.getJsonObject("servings");
@@ -146,25 +160,5 @@ public class SearchService {
          }
 
          return allergensList;
-    }
-
-    public List<String> getPreferenceList(JsonObject foodAttributes) {
-
-        List<String> preferencesList = new ArrayList<>();
-        // getting preferences information
-        JsonObject preferences = foodAttributes.getJsonObject("preferences");
-        JsonArray preference = preferences.getJsonArray("preference");
-        for (int k = 0; k < preference.size(); k++) {
-            JsonObject prefer = preference.getJsonObject(k);
-
-            // test out both... not sure which on will work
-            if (prefer.getString("value").equals("1")) {
-            // if (prefer.getInt("value") == 1) {
-
-                String p = prefer.getString("name");
-                preferencesList.add(p);
-            }
-        }
-        return preferencesList;
     }
 }

@@ -12,11 +12,37 @@
             <p>Foods Consumed:</p>
             <p th:if="${#lists.isEmpty(entry.foodsConsumed)}">Start by adding a food you've eaten today!</p>
             <span th:unless="${#lists.isEmpty(entry.foodsConsumed)}">
-                <ol>
-                    <span th:each="food : ${entry.foodsConsumed}">
-                        <li th:utext="${food.name}"></li>
-                    </span>
-                </ol>
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Name</th>
+                            <th rowspan="2">Serving Size</th>
+                            <th colspan="4">Macronutrients</th>
+                            <th rowspan="2">Quantity</th>
+                        </tr>
+                        <tr>
+                            <th>Calories</th>
+                            <th>Carbohydrate</th>
+                            <th>Protein</th>
+                            <th>Fat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <span th:each="food : *{foodsConsumed}">
+                            <tr>
+                                <td th:utext="${food.name}"></td>
+                                <td th:utext="${food.servingDescription}"></td>
+                                <td th:utext="${food.calories}"></td>
+                                <td th:utext="${food.carbohydrate}"></td>
+                                <td th:utext="${food.protein}"></td>
+                                <td th:utext="${food.fat}"></td>
+                                <td>
+                                    <input type="number" th:name="${food.quantity}">                                    
+                                </td>
+                            </tr>
+                        </span>
+                    </tbody>
+                </table>
             </span>           
             <a th:href="@{/search}">Search for a food to add here!</a>
             <a th:href="@{/foods/new}">Can't find what you're looking for? Add your own here!</a>

@@ -17,11 +17,13 @@ public class Food {
     private String type;
 
     @NotBlank(message = "Please check all the known allergens or none if there are none!")
-    List<String> allergens;
+    private List<String> allergens;
 
-    // for vegetarian or vegan
-    @NotBlank(message = "Please check if the food is suitable for vegetarians and vegans or neither!")
-    List<String> preferences;
+    @NotEmpty(message = "Please check if the food is suitable for vegetarians!")
+    private Boolean isVegetarian = false;
+
+    @NotEmpty(message = "Please check if the food is suitable for vegans!")
+    private Boolean isVegan = false;
 
     private Long servingId;
 
@@ -48,6 +50,9 @@ public class Food {
     @Pattern(regexp = "/[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
     private String brand;
     
+    @NotEmpty(message = "Please input how many servings you have eaten!")
+    private Integer quantity;
+
     public Food() {
     }
 
@@ -91,13 +96,6 @@ public class Food {
         this.brand = brand;
     }
 
-    // TODO look at this to string!!
-    @Override
-    public String toString() {
-        return id + "," + customId + "," + name + "," + type + "," + "," + url
-                + "," + brand;
-    }
-
     public String getCustomId() {
         return customId;
     }
@@ -114,12 +112,20 @@ public class Food {
         this.allergens = allergens;
     }
 
-    public List<String> getPreferences() {
-        return preferences;
+    public Boolean getIsVegetarian() {
+        return isVegetarian;
     }
 
-    public void setPreferences(List<String> preferences) {
-        this.preferences = preferences;
+    public void setIsVegetarian(Boolean isVegetarian) {
+        this.isVegetarian = isVegetarian;
+    }
+
+    public Boolean getIsVegan() {
+        return isVegan;
+    }
+
+    public void setIsVegan(Boolean isVegan) {
+        this.isVegan = isVegan;
     }
 
     public Long getServingId() {
@@ -169,6 +175,45 @@ public class Food {
     public void setFat(Double fat) {
         this.fat = fat;
     }
-    
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String toStringForEntry() {
+        return name + "," + servingDescription + "," + calories
+                + "," + carbohydrate + "," + protein + "," + fat;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(id + ",");
+        sb.append(customId + ",");
+        sb.append(name + ",");
+        sb.append(type + ",");
+        for (String a : allergens){
+            sb.append("|" + a);
+        }
+        sb.append("," + isVegetarian);
+        sb.append("," + isVegan);
+        sb.append("," + servingId);
+        sb.append("," + servingDescription);
+        sb.append("," + calories);
+        sb.append("," + carbohydrate);
+        sb.append("," + protein);
+        sb.append("," + fat);
+        sb.append("," + url);
+        sb.append("," + brand);
+        sb.append("," + quantity);
+
+        return sb.toString();
+    }
+
+
     
 }

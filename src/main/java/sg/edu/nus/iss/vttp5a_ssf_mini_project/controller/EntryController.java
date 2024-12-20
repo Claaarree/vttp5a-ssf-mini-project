@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.EntryService;
@@ -54,6 +57,9 @@ public class EntryController {
     
     @PostMapping("/new/{entryId}")
     public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> map, HttpSession session) {     
+        System.out.println("map keyset: " + map.keySet());
+        System.out.println("foodToAdd value: " + map.getFirst("foodToAdd").toString());
+        
         Food f = entryService.mapToFoodObject(map);
         // System.out.println(f.toString() + "in post");
 
@@ -66,6 +72,15 @@ public class EntryController {
         session.setAttribute("entry", entry);
         mav.addObject("entry", entry);
 
+        return mav;
+    }
+
+    @PostMapping("/add")
+    public ModelAndView handleEntryForm(@Valid @ModelAttribute Entry e, BindingResult results) {
+        ModelAndView mav = new ModelAndView();
+        if (results.hasErrors()){
+            mav.setViewName("addEntry");
+        }
         return mav;
     }
 }

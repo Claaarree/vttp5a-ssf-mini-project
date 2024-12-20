@@ -38,10 +38,10 @@
                         <td th:utext="${food.name}"></td>
                         <td th:utext="${food.brand}"></td>
                         <td th:utext="${food.allergens}"></td>
-                        <td th:if="${#lists.contains(food.preferences, 'Vegetarian')}" th:utext="Y"></td>
-                        <td th:unless="${#lists.contains(food.preferences, 'Vegetarian')}" th:utext="UNKNOWN"></td>
-                        <td th:if="${#lists.contains(food.preferences, 'Vegan')}" th:utext="Y"></td>
-                        <td th:unless="${#lists.contains(food.preferences, 'Vegan')}" th:utext="UNKNOWN"></td>
+                        <td th:if="${#bools.isTrue(food.isVegetarian)}" th:utext="Y"></td>
+                        <td th:unless="${#bools.isTrue(food.isVegetarian)}" th:utext="N"></td>
+                        <td th:if="${#bools.isTrue(food.isVegan)}" th:utext="Y"></td>
+                        <td th:unless="${#bools.isTrue(food.isVegan)}" th:utext="N"></td>
                         <td>
                             <a th:href="@{${food.url}}" th:utext="${food.url}"></a>
                         </td>
@@ -50,8 +50,6 @@
                                 <!-- <input th:value="${food}" name="foodToAdd" hidden> -->
                                 <button type="submit" th:value="${food}" name="foodToAdd">Add to Entry</button>
                             </form>
-
-                            <!-- <a th:href="@{/newEntry/add/{id} (id=${food.id})}">Add to Entry</a> -->
                         </td>
                     </tr>
                 </span>
