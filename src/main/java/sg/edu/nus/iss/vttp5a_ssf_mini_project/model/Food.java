@@ -3,6 +3,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 import java.util.List;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
 public class Food {
@@ -15,19 +16,30 @@ public class Food {
     @NotBlank(message = "Please choose an approprite food type!")
     private String type;
 
+    @NotBlank(message = "Please check all the known allergens or none if there are none!")
     List<String> allergens;
 
     // for vegetarian or vegan
+    @NotBlank(message = "Please check if the food is suitable for vegetarians and vegans or neither!")
     List<String> preferences;
 
     private Long servingId;
+
+    @NotBlank(message = "Please enter the serving size!")
     private String servingDescription;
+    
     // units in kcal
+    @NotEmpty(message = "Please enter a rough estimate of the food calories in kcal!")
     private Double calories;
 
     // units in g
+    @NotEmpty(message = "Please enter a rough estimate of the carbohydrate content in g!")
     private Double carbohydrate;
+
+    @NotEmpty(message = "Please enter a rough estimate of the protein content in g!")
     private Double protein;
+
+    @NotEmpty(message = "Please enter a rough estimate of the fat content in g!")
     private Double fat;
 
     private String url;
@@ -63,14 +75,6 @@ public class Food {
         this.type = type;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getUrl() {
         return url;
     }
@@ -87,9 +91,10 @@ public class Food {
         this.brand = brand;
     }
 
+    // TODO look at this to string!!
     @Override
     public String toString() {
-        return id + "," + customId + "," + name + "," + type + "," + description + "," + url
+        return id + "," + customId + "," + name + "," + type + "," + "," + url
                 + "," + brand;
     }
 
@@ -99,6 +104,70 @@ public class Food {
 
     public void setCustomId(String customId) {
         this.customId = customId;
+    }
+
+    public List<String> getAllergens() {
+        return allergens;
+    }
+
+    public void setAllergens(List<String> allergens) {
+        this.allergens = allergens;
+    }
+
+    public List<String> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(List<String> preferences) {
+        this.preferences = preferences;
+    }
+
+    public Long getServingId() {
+        return servingId;
+    }
+
+    public void setServingId(Long servingId) {
+        this.servingId = servingId;
+    }
+
+    public String getServingDescription() {
+        return servingDescription;
+    }
+
+    public void setServingDescription(String servingDescription) {
+        this.servingDescription = servingDescription;
+    }
+
+    public Double getCalories() {
+        return calories;
+    }
+
+    public void setCalories(Double calories) {
+        this.calories = calories;
+    }
+
+    public Double getCarbohydrate() {
+        return carbohydrate;
+    }
+
+    public void setCarbohydrate(Double carbohydrate) {
+        this.carbohydrate = carbohydrate;
+    }
+
+    public Double getProtein() {
+        return protein;
+    }
+
+    public void setProtein(Double protein) {
+        this.protein = protein;
+    }
+
+    public Double getFat() {
+        return fat;
+    }
+
+    public void setFat(Double fat) {
+        this.fat = fat;
     }
     
     
