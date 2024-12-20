@@ -28,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <span th:each="food : *{foodsConsumed}">
+                        <span th:each="food, iterStat : *{foodsConsumed}">
                             <tr>
                                 <td th:utext="${food.name}"></td>
                                 <td th:utext="${food.servingDescription}"></td>
@@ -37,7 +37,7 @@
                                 <td th:utext="${food.protein}"></td>
                                 <td th:utext="${food.fat}"></td>
                                 <td>
-                                    <input type="number" th:name="${food.quantity}">                                    
+                                    <input type="number" th:field="*{foodsConsumed[__${iterStat.index}__].quantity}">                                    
                                 </td>
                             </tr>
                         </span>
@@ -51,10 +51,12 @@
         <div>
             <label for="consumptionDate">Date of Consumption:</label>
             <input type="date" id="consumptionDate" th:field="*{consumptionDate}">
+            <span th:if="${#fields.hasErrors('consumptionDate')}" th:errors="*{consumptionDate}"></span>
         </div>
         <div>
             <label for="consumptionTime">Time of Consumption:</label>
             <input type="time" id="consumptionTime" th:field="*{consumptionTime}">
+            <span th:if="${#fields.hasErrors('consumptionTime')}" th:errors="*{consumptionTime}"></span>
         </div>
         <div>
             <label for="entryId">Entry ID:</label>

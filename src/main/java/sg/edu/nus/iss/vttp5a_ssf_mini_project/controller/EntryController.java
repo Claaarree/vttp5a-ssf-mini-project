@@ -57,8 +57,8 @@ public class EntryController {
     
     @PostMapping("/new/{entryId}")
     public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> map, HttpSession session) {     
-        System.out.println("map keyset: " + map.keySet());
-        System.out.println("foodToAdd value: " + map.getFirst("foodToAdd").toString());
+        // System.out.println("map keyset: " + map.keySet());
+        // System.out.println("foodToAdd value: " + map.getFirst("foodToAdd").toString());
         
         Food f = entryService.mapToFoodObject(map);
         // System.out.println(f.toString() + "in post");
@@ -76,11 +76,41 @@ public class EntryController {
     }
 
     @PostMapping("/add")
-    public ModelAndView handleEntryForm(@Valid @ModelAttribute Entry e, BindingResult results) {
+    public ModelAndView handleEntryForm(@Valid @ModelAttribute Entry e, BindingResult results, 
+    HttpSession session) {
+        // System.out.println(quantityMap.keySet() + "keyset");
+        // System.out.println(quantityMap.getFirst("foodsConsumed[0].quantity"));
+
+        // get the entry from session
+        // then set the qty from the model attribute e
+
+        for(Food f: e.getFoodsConsumed()){
+            System.out.println("in post /add " + f.getQuantity());
+            System.out.println("in post /add " + f.getName());
+
+        }
         ModelAndView mav = new ModelAndView();
+
+        Entry entry = (Entry)session.getAttribute("entry");
+        for (int i = 0; i < e.getFoodsConsumed().size(); i++){
+            Food wQtd = e.getFoodsConsumed().get(i);
+            Food noQtd = entry.getFoodsConsumed().get(i);
+            noQtd.setQuantity(wQtd.getQuantity());
+        }
+        
         if (results.hasErrors()){
             mav.setViewName("addEntry");
+            e.setEntryId(entry.getEntryId());
+            e.setFoodsConsumed(entry.getFoodsConsumed());
+            // mav.addObject("entry", e);
+            // mav.setViewName("redirect:/entries/new/{entryId}");
+            // Entry entry = (Entry)session.getAttribute("entry");
+            // mav.addObject("entryId", entry.getEntryId());
+        } else {
+            // TODO change redirect to homepage once set up or maybe a successfully saved page
+            mav.setViewName("redirect:/search");
         }
+
         return mav;
     }
 }

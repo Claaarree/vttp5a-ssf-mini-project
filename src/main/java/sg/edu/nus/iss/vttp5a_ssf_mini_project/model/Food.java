@@ -2,6 +2,8 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

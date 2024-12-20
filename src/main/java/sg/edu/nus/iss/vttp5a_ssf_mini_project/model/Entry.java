@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 
@@ -18,9 +17,10 @@ public class Entry {
     
     @NotNull(message = "Please select the date of consumption!")
     @PastOrPresent(message = "Have you eaten yet? The date shouldn't be in the future!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date consumptionDate;
 
-    @NotEmpty(message = "Please select the time of consumption!")
+    @NotNull(message = "Please select the time of consumption!")
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime consumptionTime;
 

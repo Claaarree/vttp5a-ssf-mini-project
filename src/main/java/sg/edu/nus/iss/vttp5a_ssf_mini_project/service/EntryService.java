@@ -20,10 +20,14 @@ public class EntryService {
         f.setCustomId(foodToAdd[1]);
         f.setName(foodToAdd[2]);
         f.setType(foodToAdd[3]);
-        String[] allergens = foodToAdd[4].substring(1).split("|");
         List<String> allergensList = new ArrayList<>();
-        for (int i = 0; i < allergens.length; i++){
-            allergensList.add(allergens[i]);
+        if (foodToAdd[4].isEmpty()){
+            allergensList.add("UNKNOWN");
+        } else {
+            String[] allergens = foodToAdd[4].substring(1).split("|");
+            for (int i = 0; i < allergens.length; i++){
+                allergensList.add(allergens[i]);
+            }
         }
         f.setAllergens(allergensList);
         f.setIsVegetarian(Boolean.parseBoolean(foodToAdd[5]));
