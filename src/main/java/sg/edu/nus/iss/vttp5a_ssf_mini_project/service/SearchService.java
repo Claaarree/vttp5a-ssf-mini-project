@@ -58,13 +58,10 @@ public class SearchService {
             } else {
                 f.setBrand("NA");
             }
-
-            // TODO check if food attributes is null and assign as UNKNOWN!
-            JsonObject foodAttributes = fJObject.getJsonObject("food_attributes");
-
+            
             List<String> allergensList = new ArrayList<>();
             List<String> preferencesList = new ArrayList<>();          
-
+            JsonObject foodAttributes = fJObject.getJsonObject("food_attributes");
             if (foodAttributes != null) {
                 allergensList = getAllergensList(foodAttributes);
                 preferencesList = getPreferenceList(foodAttributes);
@@ -73,11 +70,27 @@ public class SearchService {
                 allergensList.add("UNKNOWN");
                 preferencesList.add("UNKNOWN");
             }
+            f.setAllergens(allergensList);
+            f.setPreferences(preferencesList);
 
-           
-
-            
-
+            // getting macronutrients for default serving
+            JsonObject servings = fJObject.getJsonObject("servings");
+            JsonArray serving = servings.getJsonArray("serving");
+            for (int j = 0; j < serving.size(); j++) {
+                JsonObject serve = serving.getJsonObject(j);
+                // if this doesn't work, then get int
+                if (serve.getString("is_default") == null){
+                    continue;
+                } else {
+                    f.setServingId(Long.valueOf(serve.getString("serving_id")));
+                    f.setServingDescription(serve.getString("serving_description"));
+                    f.setCalories(Double.valueOf(serve.getString("calories")));
+                    f.setCarbohydrate(Double.valueOf(serve.getString("carbohydrate")));
+                    f.setProtein(Double.valueOf(serve.getString("protein")));
+                    f.setFat(Double.valueOf(serve.getString("fat")));
+                    break;
+                }
+            }
 
             foodList.add(f);
         }
@@ -124,8 +137,8 @@ public class SearchService {
              JsonObject allergy = allergen.getJsonObject(j);
 
              // test out both... not sure which on will work
-             // if (allergy.getString("value").equals("1")){
-             if (allergy.getInt("value") == 1){
+             if (allergy.getString("value").equals("1")){
+            //  if (allergy.getInt("value") == 1){
 
                  String a = allergy.getString("name");
                  allergensList.add(a);
@@ -145,8 +158,8 @@ public class SearchService {
             JsonObject prefer = preference.getJsonObject(k);
 
             // test out both... not sure which on will work
-            // if (prefer.getString("value").equals("1")) {
-            if (prefer.getInt("value") == 1) {
+            if (prefer.getString("value").equals("1")) {
+            // if (prefer.getInt("value") == 1) {
 
                 String p = prefer.getString("name");
                 preferencesList.add(p);
