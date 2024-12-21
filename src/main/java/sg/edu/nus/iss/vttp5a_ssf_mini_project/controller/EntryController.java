@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,17 +91,28 @@ public class EntryController {
         // }
         ModelAndView mav = new ModelAndView();
         
-        // get the entry from session
-        // then set the qty from the model attribute e
+        
         Entry entry = (Entry)session.getAttribute("entry");
-        for (int i = 0; i < e.getFoodsConsumed().size(); i++){
-            Food wQtd = e.getFoodsConsumed().get(i);
-            Food noQtd = entry.getFoodsConsumed().get(i);
-            if (wQtd.getQuantity() == null || wQtd.getQuantity() < 1) {
-                FieldError qtdError = new FieldError("entry", "foodsConsumed[" + i + "].quantity", "Please enter a quantity more than 0!");
-                results.addError(qtdError);
-            } else {
-                noQtd.setQuantity(wQtd.getQuantity());
+
+        // checking if food(s) are added
+        if (entry.getFoodsConsumed().isEmpty()) {
+            ObjectError noFoodError = new ObjectError("entry", 
+            "Please add at least one food item!");
+            results.addError(noFoodError);
+        } else {
+            // get the entry from session
+            // then set the qty from the model attribute e
+            for (int i = 0; i < e.getFoodsConsumed().size(); i++){
+                Food wQtd = e.getFoodsConsumed().get(i);
+                Food noQtd = entry.getFoodsConsumed().get(i);
+                // checking for null and non positive quantity
+                if (wQtd.getQuantity() == null || wQtd.getQuantity() < 1) {
+                    FieldError qtdError = new FieldError("entry", "foodsConsumed[" + i + "].quantity", 
+                    "Please enter a quantity more than 0!");
+                    results.addError(qtdError);
+                } else {
+                    noQtd.setQuantity(wQtd.getQuantity());
+                }
             }
         }
         

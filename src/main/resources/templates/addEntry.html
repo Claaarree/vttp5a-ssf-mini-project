@@ -11,6 +11,9 @@
         <div>
             <p>Foods Consumed:</p>
             <p th:if="${#lists.isEmpty(entry.foodsConsumed)}">Start by adding a food you've eaten today!</p>
+            <span th:if="${#fields.hasErrors('global')}">
+                <p th:each="err :${#fields.errors('global')}" th:utext="${err}"></p>
+            </span>
             <span th:unless="${#lists.isEmpty(entry.foodsConsumed)}">
                 <table>
                     <thead>
@@ -62,6 +65,7 @@
         <div>
             <label for="entryId">Entry ID:</label>
             <!-- figure out way to make this greyed out during styling -->
+             <!-- maybe just hide it? -->
             <input type="text" id="entryId" th:field="*{entryId}" readonly>
         </div>
         <br>
