@@ -50,7 +50,10 @@ public class HomeController {
             String encodedPw = Base64.getEncoder().withoutPadding().encodeToString(passwordPT);
             p.setPassword(encodedPw);
             //save profile to redis
-            homeService.saveProfile(p);
+            // homeService.saveProfile(p);
+            System.out.println(p.toString());
+            // to change to login later
+            mav.setViewName("redirect:/search");
         }
 
         return mav;

@@ -12,11 +12,10 @@ public class Profile {
     private String name;
 
     @NotBlank(message = "Please input a new password for your profile!")
-    @Size(min = 8, message = "Your password must be at least 8 character!")
+    @Size(min = 8, message = "Your password must be at least 8 characters!")
     private String password;
 
-    // TODO check this validation 
-    @NotBlank
+    @NotBlank(message = "Please input a valid email!")
     @Email(message = "Please input a valid email!")
     private String email;
    
@@ -53,6 +52,11 @@ public class Profile {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Profile [id=" + id + ", name=" + name + ", password=" + password + ", email=" + email + "]";
     }
 
 }
