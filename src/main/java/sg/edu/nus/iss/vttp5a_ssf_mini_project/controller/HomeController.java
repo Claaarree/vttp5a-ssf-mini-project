@@ -3,6 +3,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.controller;
 import java.util.Base64;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.validation.Valid;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Profile;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.HomeService;
 
 @Controller
 @RequestMapping()
 public class HomeController {
+
+    @Autowired
+    HomeService homeService;
 
     @GetMapping
     public ModelAndView login() {
@@ -44,7 +49,8 @@ public class HomeController {
             byte[] passwordPT = p.getPassword().getBytes();
             String encodedPw = Base64.getEncoder().withoutPadding().encodeToString(passwordPT);
             p.setPassword(encodedPw);
-            // TODO save profile to redis
+            //save profile to redis
+            homeService.saveProfile(p);
         }
 
         return mav;
