@@ -2,6 +2,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.controller;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,14 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.FoodService;
 
 @Controller
 @RequestMapping("/foods")
 public class FoodController {
+
+    @Autowired
+    FoodService foodService;
 
     @GetMapping("/new")
     public ModelAndView newFoodForm(HttpSession session) {
@@ -44,13 +49,18 @@ public class FoodController {
     }
 
     @PostMapping("/new")
-    public ModelAndView handleFoodForm(@Valid @ModelAttribute Food f, BindingResult results) {
+    public ModelAndView handleFoodForm(@Valid @ModelAttribute Food f, BindingResult results,
+    HttpSession session) {
         ModelAndView mav = new ModelAndView();
         if (results.hasErrors()){
             mav.setViewName("foodForm");
         } else {
             f.setCustomId("CUSTOM" + UUID.randomUUID().toString());
             System.out.println(f.toString());
+            String userId = (String)session.getAttribute("userId");
+            // foodService.saveCustomFood(f, userId);
+            foodService.saveCustomFood(f, "test");
+
             // TODO change redirect to homepage!
             // or maybe can stay as search?
             mav.setViewName("redirect:/search");

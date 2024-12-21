@@ -27,7 +27,9 @@ public class HashRepo {
     }
     
     public void addToHash(String redisKey, String field, String value) {
+        System.out.println("in repo!");
         redisTemplate.opsForHash().putIfAbsent(redisKey, field, value);
+
     }
 
     public String getFieldValue(String redisKey, String field) {
