@@ -6,12 +6,13 @@
     <title>New Food</title>
 </head>
 <body>
-    <form method="post" th:action="@{/entries/new/{entryId} (entryId = ${entryId})}" th:object="${food}">
+    <h1>Create your own custom food!</h1>
+    <form method="post" th:action="@{/foods/new}" th:object="${food}">
         <div>
             <label for="name">Name of Food:</label>
             <input th:field="*{name}" type="text" id="name">
             <!-- double check validation syntax -->
-            <span th:if="${#fields.hasErrors('name')}" th:error="${#fields.error('name')}"></span>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="${#fields.error('name')}"></span>
         </div>
         <div>
             <label for="type">Type:</label>
@@ -20,9 +21,79 @@
                 <option value="Brand">Brand</option>
             </select>
             <!-- double check validation syntax -->
-            <span th:if="${#fields.hasErrors('name')}" th:error="${#fields.error('name')}"></span>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="${#fields.error('name')}"></span>
         </div>
-
+        <div>
+            <label for="brand">Brand of Food (NA if type is "Generic"):</label>
+            <input th:field="*{brand}" type="text" id="brand">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('brand')}" th:errors="${#fields.error('brand')}"></span>
+        </div>
+        <div>
+            Allergens: <br>
+            <label for="milk">Milk</label>
+            <input id="milk" type="checkbox" value="Milk" th:field="*{allergens}">
+            <label for="lactose">Lactose</label>
+            <input id="lactose" type="checkbox" value="Lactose" th:field="*{allergens}">
+            <label for="egg">Egg</label>
+            <input id="egg" type="checkbox" value="Egg" th:field="*{allergens}">
+            <label for="fish">Fish</label>
+            <input id="fish" type="checkbox" value="Fish" th:field="*{allergens}">
+            <label for="gluten">Gluten</label>
+            <input id="gluten" type="checkbox" value="Gluten" th:field="*{allergens}">
+            <label for="nuts">Nuts</label>
+            <input id="nuts" type="checkbox" value="Nuts" th:field="*{allergens}">
+            <label for="peanuts">Peanuts</label>
+            <input id="peanuts" type="checkbox" value="Peanuts" th:field="*{allergens}">
+            <label for="shellfish">Shellfish</label>
+            <input id="shellfish" type="checkbox" value="Shellfish" th:field="*{allergens}">
+            <label for="soy">Soy</label>
+            <input id="soy" type="checkbox" value="Soy" th:field="*{allergens}">
+            <label for="sesame">Sesame</label>
+            <input id="sesame" type="checkbox" value="Sesame" th:field="*{allergens}">
+            <label for="none">None</label>
+            <input id="none" type="checkbox" value="NONE" th:field="*{allergens}">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('allergens')}" th:errors="${#fields.error('allergens')}"></span>
+        </div>
+        <div>
+            Suitable for: <br>
+            <label for="isVegetarian">Vegetarians</label>
+            <input id="isVegetarian" type="checkbox" value="true" th:field="*{isVegetarian}">
+            <label for="isVegan">Vegans</label>
+            <input id="isVegan" type="checkbox" value="true" th:field="*{isVegan}">
+        </div>
+        <div>
+            <label for="servingDescription">Serving Size:</label>
+            <input th:field="*{servingDescription}" type="text" id="servingDescription">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('servingDescription')}" th:errors="${#fields.error('servingDescription')}"></span>
+        </div>
+        <div>
+            <label for="calories">Calories (kcal):</label>
+            <input th:field="*{calories}" type="number" step="0.1" id="calories">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('calories')}" th:errors="${#fields.error('calories')}"></span>
+        </div>
+        <div>
+            <label for="carbohydrate">Carbohydrate (g):</label>
+            <input th:field="*{carbohydrate}" type="number" step="0.1" id="carbohydrate">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('carbohydrate')}" th:errors="${#fields.error('carbohydrate')}"></span>
+        </div>
+        <div>
+            <label for="protein">Protein (g):</label>
+            <input th:field="*{protein}" type="number" step="0.1" id="protein">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('protein')}" th:errors="${#fields.error('protein')}"></span>
+        </div>
+        <div>
+            <label for="fat">Fat (g):</label>
+            <input th:field="*{fat}" type="number" step="0.1" id="fat">
+            <!-- double check validation syntax -->
+            <span th:if="${#fields.hasErrors('fat')}" th:errors="${#fields.error('fat')}"></span>
+        </div>
+        <button type="submit">Submit</button>
     </form>
     
 </body>

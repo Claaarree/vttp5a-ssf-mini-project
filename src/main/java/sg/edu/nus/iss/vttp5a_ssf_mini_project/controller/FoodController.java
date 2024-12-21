@@ -3,11 +3,15 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.controller;
 import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 
@@ -36,6 +40,13 @@ public class FoodController {
             mav.addObject("entryId", e.getEntryId());
             session.setAttribute("entry", e);
         }
+
+        return mav;
+    }
+
+    @PostMapping("/new")
+    public ModelAndView handleFoodForm(@Valid @ModelAttribute Food f, BindingResult results) {
+        ModelAndView mav = new ModelAndView();
 
         return mav;
     }

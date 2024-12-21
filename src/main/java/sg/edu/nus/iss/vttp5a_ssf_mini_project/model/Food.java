@@ -2,7 +2,6 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
 import java.util.List;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -20,10 +19,10 @@ public class Food {
     @NotBlank(message = "Please check all the known allergens or none if there are none!")
     private List<String> allergens;
 
-    @NotEmpty(message = "Please check if the food is suitable for vegetarians!")
+    // @NotEmpty(message = "Please check if the food is suitable for vegetarians!")
     private Boolean isVegetarian = false;
 
-    @NotEmpty(message = "Please check if the food is suitable for vegans!")
+    // @NotEmpty(message = "Please check if the food is suitable for vegans!")
     private Boolean isVegan = false;
 
     private Long servingId;
@@ -47,12 +46,10 @@ public class Food {
 
     private String url;
 
-    @NotBlank(message = "Please input the brand of the food or NA if the food type is Generic!")
+    @NotBlank(message = "Please input the brand of the food!")
     @Pattern(regexp = "/[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
     private String brand;
     
-    @NotEmpty(message = "Please enter the amount of servings eaten!")
-    @Min(value = 1, message = "Please input a quantity greater than 0!")
     private Integer quantity;
 
     public Food() {

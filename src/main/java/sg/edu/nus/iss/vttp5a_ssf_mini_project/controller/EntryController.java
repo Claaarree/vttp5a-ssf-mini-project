@@ -105,6 +105,7 @@ public class EntryController {
             for (int i = 0; i < e.getFoodsConsumed().size(); i++){
                 Food wQtd = e.getFoodsConsumed().get(i);
                 Food noQtd = entry.getFoodsConsumed().get(i);
+
                 // checking for null and non positive quantity
                 if (wQtd.getQuantity() == null || wQtd.getQuantity() < 1) {
                     FieldError qtdError = new FieldError("entry", "foodsConsumed[" + i + "].quantity", 
@@ -129,4 +130,5 @@ public class EntryController {
 
         return mav;
     }
+
 }
