@@ -2,8 +2,10 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class Food {
@@ -16,7 +18,7 @@ public class Food {
     @NotBlank(message = "Please choose an approprite food type!")
     private String type;
 
-    @NotBlank(message = "Please check all the known allergens or none if there are none!")
+    @NotEmpty(message = "Please check all the known allergens or none if there are none!")
     private List<String> allergens;
 
     // @NotEmpty(message = "Please check if the food is suitable for vegetarians!")
@@ -31,23 +33,27 @@ public class Food {
     private String servingDescription;
     
     // units in kcal
-    @NotEmpty(message = "Please enter a rough estimate of the food calories in kcal!")
+    @NotNull(message = "Please enter a rough estimate of the food calories in kcal!")
+    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
     private Double calories;
 
     // units in g
-    @NotEmpty(message = "Please enter a rough estimate of the carbohydrate content in g!")
+    @NotNull(message = "Please enter a rough estimate of the carbohydrate content in g!")
+    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
     private Double carbohydrate;
 
-    @NotEmpty(message = "Please enter a rough estimate of the protein content in g!")
+    @NotNull(message = "Please enter a rough estimate of the protein content in g!")
+    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
     private Double protein;
 
-    @NotEmpty(message = "Please enter a rough estimate of the fat content in g!")
+    @NotNull(message = "Please enter a rough estimate of the fat content in g!")
+    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
     private Double fat;
 
     private String url;
 
     @NotBlank(message = "Please input the brand of the food!")
-    @Pattern(regexp = "/[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
+    @Pattern(regexp = "[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
     private String brand;
     
     private Integer quantity;

@@ -28,7 +28,6 @@ public class FoodController {
         // maybe if I don't set it then i can chekc for null?
         // f.setId(Double.doubleToLongBits(Math.sqrt(-1)));
     
-        f.setCustomId("CUSTOM" + UUID.randomUUID().toString());
         mav.addObject("food", f);
         Entry entry = (Entry)session.getAttribute("entry");
 
@@ -47,7 +46,15 @@ public class FoodController {
     @PostMapping("/new")
     public ModelAndView handleFoodForm(@Valid @ModelAttribute Food f, BindingResult results) {
         ModelAndView mav = new ModelAndView();
-
+        if (results.hasErrors()){
+            mav.setViewName("foodForm");
+        } else {
+            f.setCustomId("CUSTOM" + UUID.randomUUID().toString());
+            System.out.println(f.toString());
+            // TODO change redirect to homepage!
+            // or maybe can stay as search?
+            mav.setViewName("redirect:/search");
+        }
         return mav;
     }
     

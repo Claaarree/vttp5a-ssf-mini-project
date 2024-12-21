@@ -13,9 +13,17 @@
         <span th:if="${blankError}">
             <p th:utext="${blankError}"></p>
         </span>
+    </form> 
+    <br>
+    <br>
+    <form th:action="@{/customSearch}" method="post">
+        <label for="customSearch">Search for your custom food previously created here:</label>
+        <input type="text" id="customSearch" name="customSearch">
+        <button type="submit">Search</button>
     </form>
     <br>
     <br>
+    <a th:href="@{/foods/new}">Can't find what you're looking for? Add your own custom food here!</a>
     <span th:if="${foods}">
         <table>
             <thead>
