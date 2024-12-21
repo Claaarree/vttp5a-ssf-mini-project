@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -81,21 +82,26 @@ public class EntryController {
         // System.out.println(quantityMap.keySet() + "keyset");
         // System.out.println(quantityMap.getFirst("foodsConsumed[0].quantity"));
 
+        
+        // for(Food f: e.getFoodsConsumed()){
+        //     System.out.println("in post /add " + f.getQuantity());
+        //     System.out.println("in post /add " + f.getName());
+            
+        // }
+        ModelAndView mav = new ModelAndView();
+        
         // get the entry from session
         // then set the qty from the model attribute e
-
-        for(Food f: e.getFoodsConsumed()){
-            System.out.println("in post /add " + f.getQuantity());
-            System.out.println("in post /add " + f.getName());
-
-        }
-        ModelAndView mav = new ModelAndView();
-
         Entry entry = (Entry)session.getAttribute("entry");
         for (int i = 0; i < e.getFoodsConsumed().size(); i++){
             Food wQtd = e.getFoodsConsumed().get(i);
             Food noQtd = entry.getFoodsConsumed().get(i);
-            noQtd.setQuantity(wQtd.getQuantity());
+            if (wQtd.getQuantity() == null || wQtd.getQuantity() < 1) {
+                FieldError qtdError = new FieldError("entry", "foodsConsumed[" + i + "].quantity", "Please enter a quantity more than 0!");
+                results.addError(qtdError);
+            } else {
+                noQtd.setQuantity(wQtd.getQuantity());
+            }
         }
         
         if (results.hasErrors()){

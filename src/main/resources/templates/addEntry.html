@@ -37,7 +37,8 @@
                                 <td th:utext="${food.protein}"></td>
                                 <td th:utext="${food.fat}"></td>
                                 <td>
-                                    <input type="number" th:field="*{foodsConsumed[__${iterStat.index}__].quantity}">                                    
+                                    <input type="number" th:field="*{foodsConsumed[__${iterStat.index}__].quantity}">
+                                    <span th:if="${#fields.hasErrors('foodsConsumed[__${iterStat.index}__].quantity')}" th:errors="*{foodsConsumed[__${iterStat.index}__].quantity}"></span>                                  
                                 </td>
                             </tr>
                         </span>

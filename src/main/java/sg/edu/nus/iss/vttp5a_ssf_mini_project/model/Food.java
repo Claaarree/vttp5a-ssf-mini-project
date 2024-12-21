@@ -2,6 +2,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
 import java.util.List;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -50,6 +51,8 @@ public class Food {
     @Pattern(regexp = "/[\\w].*", message = "Enter NA if the food type is Generic! Do not start with a special chracter!")
     private String brand;
     
+    @NotEmpty(message = "Please enter the amount of servings eaten!")
+    @Min(value = 1, message = "Please input a quantity greater than 0!")
     private Integer quantity;
 
     public Food() {
