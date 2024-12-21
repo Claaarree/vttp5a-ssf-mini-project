@@ -1,10 +1,23 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.model;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class Profile {
     
     private String id;
-    private String password;
+
+    @NotBlank(message = "Please enter your name to create a new profile!")
     private String name;
+
+    @NotBlank(message = "Please input a new password for your profile!")
+    @Size(min = 8, message = "Your password must be at least 8 character!")
+    private String password;
+
+    // TODO check this validation 
+    @NotBlank
+    @Email(message = "Please input a valid email!")
     private String email;
    
     public Profile() {
