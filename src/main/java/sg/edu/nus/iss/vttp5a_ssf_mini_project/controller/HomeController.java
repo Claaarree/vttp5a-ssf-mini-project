@@ -85,8 +85,7 @@ public class HomeController {
             homeService.saveProfile(p);
             // System.out.println(p.toString());
 
-            // TODO to change to login later
-            mav.setViewName("redirect:/search");
+            mav.setViewName("redirect:/");
         }
 
         return mav;
