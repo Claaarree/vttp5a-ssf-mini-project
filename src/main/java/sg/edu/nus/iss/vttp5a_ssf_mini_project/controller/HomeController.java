@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,11 +54,18 @@ public class HomeController {
                 mav.setViewName("redirect:/home");
             }else {
                 // add error for wrong password
+                ObjectError wrongPw = new ObjectError("wrongPw", 
+                "The password you have entered is wrong... Please try again!");
+                results.addError(wrongPw);
+                mav.setViewName("loginPage");
             }
-
 
         } else {
             // add error for no profile exist, create new one
+            ObjectError noProfile = new ObjectError("noProfile", 
+            "It seems like you do not have an account! Please create one before trying to login!");
+            results.addError(noProfile);
+            mav.setViewName("loginPage");
         }
 
         return mav;
