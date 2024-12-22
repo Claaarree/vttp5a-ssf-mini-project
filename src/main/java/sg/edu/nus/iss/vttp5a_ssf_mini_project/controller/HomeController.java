@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -50,6 +49,7 @@ public class HomeController {
             if (p.getPassword().equals(encodedPw)) {
                 session.setAttribute("isAuthenticated", true);
                 session.setAttribute("userId", p.getId());
+                session.setAttribute("username", p.getName());
                 // TODO set mapping for homepage
                 mav.setViewName("redirect:/home");
             }else {
@@ -96,6 +96,15 @@ public class HomeController {
 
             mav.setViewName("redirect:/");
         }
+
+        return mav;
+    }
+
+    @GetMapping("/home")
+    public ModelAndView homePage(HttpSession session) {
+        ModelAndView mav = new ModelAndView("homePage");
+        String username = (String)session.getAttribute("username");
+        mav.addObject("username", username);
 
         return mav;
     }

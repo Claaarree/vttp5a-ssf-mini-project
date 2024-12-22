@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+    <h1>Hello <span th:utext="${username}"></span>, chiak pah buey? Welcome to your personal food diary!</h1>
+    <div>
+        <a th:href="@{/search}">Click here to look up a particular food!</a>
+        <p>One cannot think well, love well, sleep well, if one has not dined well. -Virginia Woolf</p>
+    </div>
+    <div>
+        <a th:href="@{/entries/new}">To record what you have eaten today, click here!</a>
+        <p>But perhaps the best way to measure your progress is with a habit tracker. -James clear</p>
+    </div>
+    <div>
+        <a>Click here to see what you've eaten in the past!</a>
+        <p>The only time you should ever look back is to see how far you've come.</p>
+    </div>
+</body>
+</html>
