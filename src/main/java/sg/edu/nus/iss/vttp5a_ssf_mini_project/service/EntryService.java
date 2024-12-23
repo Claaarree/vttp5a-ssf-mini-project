@@ -87,11 +87,13 @@ public class EntryService {
                 fObject = Json.createObjectBuilder()
                         .add("id", f.getId())
                         .add("servingId", f.getServingId())
+                        .add("quantity", f.getQuantity())
                         .build();
                 
             } else {
                 fObject = Json.createObjectBuilder()
                         .add("customId", f.getCustomId())
+                        .add("quantity", f.getQuantity())
                         .build();
             }
             foodsConsumedArrayBuilder.add(fObject);
@@ -161,8 +163,10 @@ public class EntryService {
             try {
                 f.setId(Long.valueOf(fObject.getString("id")));
                 f.setServingId(Long.valueOf(fObject.getString("servingId")));
+                f.setQuantity(fObject.getInt("quantity"));
             } catch (Exception err) {
                 f.setCustomId(fObject.getString("customId"));
+                f.setQuantity(fObject.getInt("quantity"));
             }
             foodConsumedList.add(f);
         }

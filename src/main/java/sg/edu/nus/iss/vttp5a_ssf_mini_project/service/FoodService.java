@@ -107,6 +107,7 @@ public class FoodService {
                 String foodString = foodFound.next().getValue();
                 fd = parser.jsonToFood(foodString);
             }
+            fd.setQuantity(f.getQuantity());
             foodsConsumedDetails.add(fd);
         }
         

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entry</title>
+</head>
+<body>
+    <p>Entry ID: <span th:utext="${entry.entryId}"></span></p>
+    <p>Consumption Date: <span th:utext="${#dates.format(entry.consumptionDate, 'dd/MM/yyyy')}"></span></p>
+    <p>Consumption Time: <span th:utext="${entry.time}"></span></p>
+    <p>Foods consumed</p>
+    <table>
+        <thead>
+            <tr>
+                <th rowspan="2">Name</th>
+                <th rowspan="2">Serving Size</th>
+                <th colspan="4">Macronutrients</th>
+                <th rowspan="2">Quantity</th>
+            </tr>
+            <tr>
+                <th>Calories</th>
+                <th>Carbohydrate</th>
+                <th>Protein</th>
+                <th>Fat</th>
+            </tr>
+        </thead>
+        <tbody>
+            <span th:each="food : ${entry.foodsConsumed}">
+                <tr>
+                    <td th:utext="${food.name}"></td>
+                    <td th:utext="${food.servingDescription}"></td>
+                    <td th:utext="${food.calories}"></td>
+                    <td th:utext="${food.carbohydrate}"></td>
+                    <td th:utext="${food.protein}"></td>
+                    <td th:utext="${food.fat}"></td>
+                    <td the:utext="${food.quantity}"></td>
+                </tr>
+            </span>
+        </tbody>
+    </table>
+</body>
+</html>
