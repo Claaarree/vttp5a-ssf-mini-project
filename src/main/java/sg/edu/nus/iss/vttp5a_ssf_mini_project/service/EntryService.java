@@ -1,15 +1,26 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
 
 @Service
 public class EntryService {
+
+    @Autowired
+    HashRepo entryRepo;
     
     public Food mapToFoodObject(MultiValueMap<String, String> map) {
 
@@ -48,6 +59,46 @@ public class EntryService {
         // f.setQuantity(null);
 
         return f;
+    }
+
+    public void saveEntry(String userId, Entry entryToSave) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        String formattedDate = sdf.format(entryToSave.getConsumptionDate());
+        System.out.println(formattedDate);
+        System.out.println(entryToSave.getConsumptionTime().toString());
+
+        JsonObject entryObjectToSave = entryToJson(entryToSave, formattedDate);
+        String hashKey = formattedDate + "|" + entryToSave.getEntryId();
+        entryRepo.addToHash(userId, hashKey, entryObjectToSave.toString());
+    }
+
+    public JsonObject entryToJson(Entry entry, String formattedDate) {
+        JsonArrayBuilder foodsConsumedArrayBuilder = Json.createArrayBuilder();
+        for (Food f : entry.getFoodsConsumed()) {
+            JsonObject fObject = null;
+            if (f.getId() != null){
+                fObject = Json.createObjectBuilder()
+                        .add("id", f.getId())
+                        .add("servingId", f.getServingId())
+                        .build();
+                
+            } else {
+                fObject = Json.createObjectBuilder()
+                        .add("customId", f.getCustomId())
+                        .build();
+            }
+            foodsConsumedArrayBuilder.add(fObject);
+        }
+
+        JsonObject entryObject = Json.createObjectBuilder()
+                .add("entryId", entry.getEntryId())
+                .add("consumptionDate", formattedDate)
+                .add("consumptionTime", entry.getConsumptionTime().toString())
+                .add("foodsConsumed", foodsConsumedArrayBuilder.build())
+                .build();
+
+        return entryObject;
     }
 
 }

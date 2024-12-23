@@ -67,6 +67,14 @@ public class EntryController {
 
         ModelAndView mav = new ModelAndView("redirect:/entries/new/{entryId}");
         Entry entry = (Entry)session.getAttribute("entry");
+        // if(entry != null) {
+        //     String entryId = entry.getEntryId();
+        //     mav.addObject("entryId", entryId);
+        // } else {
+        //     Entry e = new Entry();
+        //     mav.addObject("entryId", e.getEntryId());
+        //     session.setAttribute("entry", e);
+        // }
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
         if (foodsConsumedList.contains(f)){
             String duplicateError = "Please do not add duplicated foods! Increase the quantity instead!";
@@ -122,10 +130,14 @@ public class EntryController {
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
             mav.setViewName("redirect:/search");
-            session.removeAttribute("entry");
-
-            System.out.println(entry.getFoodsConsumed());
+            e.setFoodsConsumed(entry.getFoodsConsumed());
+            
+            System.out.println(e);
             // save entry to redis
+            String userId = (String)session.getAttribute("userId");
+            entryService.saveEntry(userId, e);
+
+            session.removeAttribute("entry");
         }
 
         return mav;
