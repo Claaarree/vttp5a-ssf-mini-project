@@ -4,8 +4,6 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;

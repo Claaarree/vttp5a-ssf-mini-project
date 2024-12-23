@@ -59,7 +59,6 @@ public class FoodController {
             System.out.println(f.toString());
             String userId = (String)session.getAttribute("userId");
             foodService.saveCustomFood(f, userId);
-            // foodService.saveCustomFood(f, "test");
 
             // TODO change redirect to homepage!
             // or maybe can stay as search?

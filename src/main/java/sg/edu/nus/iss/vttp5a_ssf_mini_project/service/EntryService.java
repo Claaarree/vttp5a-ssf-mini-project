@@ -11,7 +11,6 @@ import org.springframework.util.MultiValueMap;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonObjectBuilder;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
@@ -28,8 +27,8 @@ public class EntryService {
 
         Food f = new Food();
 
-        System.out.println("foodToAdd[0] " + foodToAdd[0]);
-        System.out.println("foodToAdd[7] " + foodToAdd[7]);
+        // System.out.println("foodToAdd[0] " + foodToAdd[0]);
+        // System.out.println("foodToAdd[7] " + foodToAdd[7]);
         if (!foodToAdd[0].equals("null") && !foodToAdd[7].equals("null")) {
             f.setId(Long.parseLong(foodToAdd[0]));
             f.setServingId(Long.parseLong(foodToAdd[7]));
