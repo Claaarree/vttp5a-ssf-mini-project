@@ -33,6 +33,17 @@ public class SearchController {
         List<Food> customFoodsList = foodService.getAllCustomFoods(userId);
         mav.addObject("foods", customFoodsList);
 
+        Entry entry = (Entry)session.getAttribute("entry");
+        
+        if(entry != null) {
+            String entryId = entry.getEntryId();
+            mav.addObject("entryId", entryId);
+        } else {
+            Entry e = new Entry();
+            mav.addObject("entryId", e.getEntryId());
+            session.setAttribute("entry", e);
+        }
+
         return mav;
     }
 
@@ -80,6 +91,8 @@ public class SearchController {
         ModelAndView mav = new ModelAndView("search");
 
         String userId = (String) session.getAttribute("userId");
+        Entry entry = (Entry)session.getAttribute("entry");
+        mav.addObject("entryId", entry.getEntryId());
         
         // can i get food by name?
         List<Food> foodsFound = foodService.getFoodByName(customSearch, userId);

@@ -36,7 +36,7 @@ public class HomeController {
 
     @PostMapping("/login")
     public ModelAndView authenticateLogin(@RequestBody MultiValueMap <String, String> login, 
-    BindingResult results, HttpSession session) {
+    HttpSession session) {
         ModelAndView mav = new ModelAndView();
 
         String email = login.getFirst("email");
@@ -54,17 +54,15 @@ public class HomeController {
                 mav.setViewName("redirect:/home");
             }else {
                 // add error for wrong password
-                ObjectError wrongPw = new ObjectError("wrongPw", 
-                "The password you have entered is wrong... Please try again!");
-                results.addError(wrongPw);
+                String wrongPw = "The password you have entered is wrong... Please try again!";
+                mav.addObject("wrongPw", wrongPw);
                 mav.setViewName("loginPage");
             }
 
         } else {
             // add error for no profile exist, create new one
-            ObjectError noProfile = new ObjectError("noProfile", 
-            "It seems like you do not have an account! Please create one before trying to login!");
-            results.addError(noProfile);
+            String noProfile = "It seems like you do not have an account! Please create one before trying to login!";
+            mav.addObject("noProfile", noProfile);
             mav.setViewName("loginPage");
         }
 

@@ -24,7 +24,7 @@
     <br>
     <br>
     <a th:href="@{/foods/new}">Can't find what you're looking for? Add your own custom food here!</a>
-    <span th:if="${foods}">
+    <span th:if="${foods}" th:unless="${#lists.isEmpty(foods)}">
         <table>
             <thead>
                 <tr>
@@ -51,7 +51,8 @@
                         <td th:if="${#bools.isTrue(food.isVegan)}" th:utext="Y"></td>
                         <td th:unless="${#bools.isTrue(food.isVegan)}" th:utext="N"></td>
                         <td>
-                            <a th:href="@{${food.url}}" th:utext="${food.url}"></a>
+                            <a th:href="@{${food.url}}" th:unless="${#strings.contains(food.url,'null')}" th:utext="${food.url}"></a>
+                            <span th:if="${#strings.contains(food.url,'null')}" th:utext="NA"></span>
                         </td>
                         <td>
                             <form method="post" th:action="@{/entries/new/{entryId} (entryId=${entryId})}">
@@ -63,10 +64,12 @@
                 </span>
             </tbody>
         </table>
-        <span th:unless="${pageNumber} == '0'">
-            <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
+        <span th:if=${pageNumber}>
+            <span th:unless="${pageNumber} == '0'">
+                <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
+            </span>
+            <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
         </span>
-        <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
     </span>
 </body>
 </html>

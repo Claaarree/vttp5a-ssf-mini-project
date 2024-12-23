@@ -80,15 +80,7 @@ public class EntryController {
     @PostMapping("/add")
     public ModelAndView handleEntryForm(@Valid @ModelAttribute Entry e, BindingResult results, 
     HttpSession session) {
-        // System.out.println(quantityMap.keySet() + "keyset");
-        // System.out.println(quantityMap.getFirst("foodsConsumed[0].quantity"));
-
-        
-        // for(Food f: e.getFoodsConsumed()){
-        //     System.out.println("in post /add " + f.getQuantity());
-        //     System.out.println("in post /add " + f.getName());
-            
-        // }
+     
         ModelAndView mav = new ModelAndView();
         
         
@@ -125,6 +117,9 @@ public class EntryController {
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
             mav.setViewName("redirect:/search");
+            session.removeAttribute("entry");
+
+            System.out.println(entry.getFoodsConsumed());
             // save entry to redis
         }
 

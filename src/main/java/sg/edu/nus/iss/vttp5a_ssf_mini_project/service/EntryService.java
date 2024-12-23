@@ -16,7 +16,13 @@ public class EntryService {
         String [] foodToAdd = map.getFirst("foodToAdd").split(",");
 
         Food f = new Food();
-        f.setId(Long.parseLong(foodToAdd[0]));
+
+        System.out.println("foodToAdd[0] " + foodToAdd[0]);
+        System.out.println("foodToAdd[7] " + foodToAdd[7]);
+        if (!foodToAdd[0].equals("null") && !foodToAdd[7].equals("null")) {
+            f.setId(Long.parseLong(foodToAdd[0]));
+            f.setServingId(Long.parseLong(foodToAdd[7]));
+        }
         f.setCustomId(foodToAdd[1]);
         f.setName(foodToAdd[2]);
         f.setType(foodToAdd[3]);
@@ -32,7 +38,6 @@ public class EntryService {
         f.setAllergens(allergensList);
         f.setIsVegetarian(Boolean.parseBoolean(foodToAdd[5]));
         f.setIsVegan(Boolean.parseBoolean(foodToAdd[6]));
-        f.setServingId(Long.parseLong(foodToAdd[7]));
         f.setServingDescription(foodToAdd[8]);
         f.setCalories(Double.parseDouble(foodToAdd[9]));
         f.setCarbohydrate(Double.parseDouble(foodToAdd[10]));

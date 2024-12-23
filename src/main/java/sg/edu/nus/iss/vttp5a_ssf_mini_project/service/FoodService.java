@@ -40,6 +40,7 @@ public class FoodService {
         JsonObject foodObject = Json.createObjectBuilder()
                 .add("id", String.valueOf(f.getId()))
                 .add("customId", f.getCustomId())
+                .add("name", f.getName())
                 .add("type", f.getType())
                 .add("allergens", allergensArrayBuilder.build())
                 .add("isVegetarian", f.getIsVegetarian())
@@ -90,13 +91,15 @@ public class FoodService {
       
         Food f = new Food();
 
-        f.setId(Long.valueOf(foodObject.getString("id")));
+        // no need to set those attributes that's gonna be null
+        // f.setId(Long.valueOf(String.valueOf(foodObject.getString("id"))));
         f.setCustomId(foodObject.getString("customId"));
+        f.setName(foodObject.getString("name"));
         f.setType(foodObject.getString("type"));
         f.setAllergens(allergensList);
         f.setIsVegetarian(foodObject.getBoolean("isVegetarian"));
         f.setIsVegan(foodObject.getBoolean("isVegan"));
-        f.setServingId(Long.valueOf(foodObject.getString("servingId")));
+        // f.setServingId(foodObject.getJsonNumber("servingId").longValueExact());
         f.setServingDescription(foodObject.getString("servingDescription"));
         f.setCalories(foodObject.getJsonNumber("calories").doubleValue());
         f.setCarbohydrate(foodObject.getJsonNumber("carbohydrate").doubleValue());

@@ -16,7 +16,7 @@ public class Entry {
     private String entryId;
     
     @NotNull(message = "Please select the date of consumption!")
-    @PastOrPresent(message = "Have you eaten yet? The date shouldn't be in the future!")
+    @PastOrPresent(message = "Have you eaten yet? The date should not be in the future!")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date consumptionDate;
 
@@ -61,6 +61,12 @@ public class Entry {
 
     public void setFoodsConsumed(List<Food> foodsConsumed) {
         this.foodsConsumed = foodsConsumed;
+    }
+
+    @Override
+    public String toString() {
+        return "Entry [entryId=" + entryId + ", consumptionDate=" + consumptionDate + ", consumptionTime="
+                + consumptionTime + ", foodsConsumed=" + foodsConsumed + "]";
     }
 
 }

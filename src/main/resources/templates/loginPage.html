@@ -10,10 +10,12 @@
         <div>
             <label for="email">Email: </label>
             <input type="email" id="email" name="email">
+            <span th:if="${noProfile}" th:utext="${noProfile}"></span>
         </div>
         <div>
             <label for="password">Password: </label>
             <input type="password" id="password" name="password">
+            <span th:if="${wrongPw}" th:utext="${wrongPw}"></span>
         </div>
         <button type="submit">Login</button>
     </form>
