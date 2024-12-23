@@ -34,20 +34,20 @@ public class Food {
     
     // units in kcal
     @NotNull(message = "Please enter a rough estimate of the food calories in kcal!")
-    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
+    @Min(value = (long) 0.0, message = "The value has to be greater than 0.0!")
     private Double calories;
 
     // units in g
     @NotNull(message = "Please enter a rough estimate of the carbohydrate content in g!")
-    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
+    @Min(value = (long) 0.0, message = "The value has to be greater than 0.0!")
     private Double carbohydrate;
 
     @NotNull(message = "Please enter a rough estimate of the protein content in g!")
-    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
+    @Min(value = (long) 0.0, message = "The value has to be greater than 0.0!")
     private Double protein;
 
     @NotNull(message = "Please enter a rough estimate of the fat content in g!")
-    @Min(value = (long) 0.10, message = "The value has to be greater than 0.10!")
+    @Min(value = (long) 0.0, message = "The value has to be greater than 0.0!")
     private Double fat;
 
     private String url;

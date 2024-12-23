@@ -68,7 +68,12 @@ public class EntryController {
         ModelAndView mav = new ModelAndView("redirect:/entries/new/{entryId}");
         Entry entry = (Entry)session.getAttribute("entry");
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
-        foodsConsumedList.add(f);
+        if (foodsConsumedList.contains(f)){
+            String duplicateError = "Please do not add duplicated foods! Increase the quantity instead!";
+            mav.addObject("duplicateError", duplicateError);
+        } else {
+            foodsConsumedList.add(f);
+        }
         entry.setFoodsConsumed(foodsConsumedList);
 
         session.setAttribute("entry", entry);
