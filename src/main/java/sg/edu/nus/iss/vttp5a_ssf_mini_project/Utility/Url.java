@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.vttp5a_ssf_mini_project;
+package sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility;
 
 public class Url {
     public static final String baseUrl = "https://platform.fatsecret.com/rest";

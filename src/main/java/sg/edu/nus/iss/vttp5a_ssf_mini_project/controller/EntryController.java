@@ -23,6 +23,7 @@ import jakarta.validation.Valid;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.EntryService;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.FoodService;
 
 @Controller
 @RequestMapping("/entries")
@@ -30,6 +31,9 @@ public class EntryController {
 
     @Autowired
     EntryService entryService;
+
+    @Autowired
+    FoodService foodService;
 
     @GetMapping("/new")
     public ModelAndView newEntryForm(HttpSession session) {
@@ -164,7 +168,9 @@ public class EntryController {
         ModelAndView mav = new ModelAndView("entry");
         String userId = (String)session.getAttribute("userId");
         Entry entryFound = entryService.getEntryById(entryId, userId);
-        //TODO get food particulars from food service...
+        //TODO test if this works
+        entryFound.setFoodsConsumed(foodService.requestForFoodsById(userId, entryFound));
+        mav.addObject("entry", entryFound);
 
         return mav;
     }
