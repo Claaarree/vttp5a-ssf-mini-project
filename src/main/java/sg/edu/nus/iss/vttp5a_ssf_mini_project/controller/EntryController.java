@@ -50,7 +50,7 @@ public class EntryController {
     }
 
     @GetMapping("/new/{entryId}")
-    public ModelAndView entryWithId(@PathVariable String entryId, HttpSession session) {
+    public ModelAndView entryWithId(HttpSession session) {
         ModelAndView mav = new ModelAndView("addEntry");
         Entry entry = (Entry)session.getAttribute("entry");
     
@@ -135,7 +135,7 @@ public class EntryController {
             mav.setViewName("redirect:/home");
             e.setFoodsConsumed(entry.getFoodsConsumed());
             
-            System.out.println(e);
+            // System.out.println(e);
             // save entry to redis
             String userId = (String)session.getAttribute("userId");
             entryService.saveEntry(userId, e);
@@ -154,13 +154,17 @@ public class EntryController {
         List<Entry> entriesList = entryService.getAllEntries(userId);
         mav.addObject("entries", entriesList);
         // System.out.println(userId);
+        // TODO set up method for date range filter
 
         return mav;
     }
 
     @GetMapping("/history/{entryId}")
-    public ModelAndView viewEntry() {
+    public ModelAndView viewEntry(@PathVariable String entryId, HttpSession session) {
         ModelAndView mav = new ModelAndView("entry");
+        String userId = (String)session.getAttribute("userId");
+        Entry entryFound = entryService.getEntryById(entryId, userId);
+        //TODO get food particulars from food service...
 
         return mav;
     }

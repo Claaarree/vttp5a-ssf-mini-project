@@ -3,17 +3,22 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.Constants;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.Url;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
 
@@ -22,6 +27,8 @@ public class FoodService {
     
     @Autowired
     HashRepo foodRepo;
+
+    RestTemplate template = new RestTemplate();
 
     public void saveCustomFood(Food f, String userId) {
         JsonObject foodObject = foodToJson(f);
@@ -64,10 +71,10 @@ public class FoodService {
                 .match("CUSTOM*")
                 .build();
 
-        Cursor<Entry<String, String>> customFoods = foodRepo.filter(userId, scanOps);
+        Cursor<java.util.Map.Entry<String, String>> customFoods = foodRepo.filter(userId, scanOps);
         
         while (customFoods.hasNext()){
-            Entry<String, String> customF = customFoods.next();
+            java.util.Map.Entry<String, String> customF = customFoods.next();
             String foodString = customF.getValue();
             Food f = jsonToFood(foodString);
             customFoodsList.add(f);
@@ -121,6 +128,29 @@ public class FoodService {
         }
 
         return foodsFound;
+    }
+
+    public List<Food> requestForFoodsById(String userId, Entry e) {
+        List<Food> foodsConsumedId = e.getFoodsConsumed();
+        for (Food f: foodsConsumedId) {
+            if(f.getId() != null) {
+                String url = UriComponentsBuilder.fromUriString(Url.baseUrl)
+                        .path(Url.getById)
+                        .queryParam("food_id", f.getId())
+                        .queryParam("format", "json")
+                        .queryParam("flag_default_serving", "true")
+                        .queryParam("include_food_attributes", "true")
+                        .toUriString();
+
+                RequestEntity<Void> req = RequestEntity.get(url)
+                        .header("Authorization", "Bearer " + Constants.apiKey)
+                        .build();
+                        
+            } else {
+                // TODO implement get by customid from redis use the cursor
+                foodRepo.getFieldValue(userId);
+            }
+        }
     }
 
 }

@@ -125,7 +125,7 @@ public class EntryService {
             System.out.println("in get all entries has next");
             java.util.Map.Entry<String, String> entry = entries.next();
             String entryString = entry.getValue();
-            System.out.println(entry.getKey());
+            // System.out.println(entry.getKey());
             
             Entry e = stringToEntry(entryString);
             entriesList.add(e);
@@ -171,5 +171,17 @@ public class EntryService {
         return e;
     }
     
+    public Entry getEntryById(String entryId, String userId) {
+        ScanOptions scanOpts = ScanOptions.scanOptions()
+                .match("*" + entryId)
+                .build();
+        
+        Cursor<java.util.Map.Entry<String, String>> entryFound = entryRepo.filter(userId, scanOpts);
 
+        System.out.println(entryFound.hasNext());
+
+        String entryString = entryFound.next().getValue();
+
+        return stringToEntry(entryString);
+    }
 }
