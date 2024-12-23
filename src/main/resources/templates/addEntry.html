@@ -47,7 +47,7 @@
                         </span>
                     </tbody>
                 </table>
-                <span th:if="${duplicateError}" th:utext="${duplicateError}"></span>
+                <p th:if="${duplicateError}" th:text="${duplicateError}"></p>
             </span>           
             <a th:href="@{/search}">Search for a food to add here!</a>
         </div>

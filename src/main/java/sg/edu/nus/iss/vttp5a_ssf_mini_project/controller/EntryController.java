@@ -59,15 +59,11 @@ public class EntryController {
     }
     
     @PostMapping("/new/{entryId}")
-    public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> map, HttpSession session) {     
-        // System.out.println("map keyset: " + map.keySet());
-        // System.out.println("foodToAdd value: " + map.getFirst("foodToAdd").toString());
-        
+    public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> map, HttpSession session) {             
         Food f = entryService.mapToFoodObject(map);
-        // System.out.println(f.toString() + "in post");
 
-        ModelAndView mav = new ModelAndView("redirect:/entries/new/{entryId}");
         Entry entry = (Entry)session.getAttribute("entry");
+        ModelAndView mav = new ModelAndView("addEntry");
         // if(entry != null) {
         //     String entryId = entry.getEntryId();
         //     mav.addObject("entryId", entryId);
@@ -77,10 +73,16 @@ public class EntryController {
         //     session.setAttribute("entry", e);
         // }
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
-        if (foodsConsumedList.contains(f)){
-            String duplicateError = "Please do not add duplicated foods! Increase the quantity instead!";
-            mav.addObject("duplicateError", duplicateError);
-        } else {
+        Boolean isDuplicate = false;
+        for(Food food: foodsConsumedList){
+            if (f.getName().equalsIgnoreCase(food.getName())){
+                String duplicateError = "Please do not add duplicated foods! Increase the quantity instead!";
+                mav.addObject("duplicateError", duplicateError);
+                isDuplicate = true;
+            }
+        }
+        
+        if(!isDuplicate) {
             foodsConsumedList.add(f);
         }
         entry.setFoodsConsumed(foodsConsumedList);
@@ -130,7 +132,7 @@ public class EntryController {
         
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
-            mav.setViewName("redirect:/search");
+            mav.setViewName("redirect:/home");
             e.setFoodsConsumed(entry.getFoodsConsumed());
             
             System.out.println(e);
@@ -145,11 +147,20 @@ public class EntryController {
     }
 
     @GetMapping("/history")
-    public ModelAndView showEntryHistory(@RequestParam(required = false) MultiValueMap<String, String> range,
+    public ModelAndView showEntriesHistory(@RequestParam(required = false) MultiValueMap<String, String> range,
     HttpSession session) {
         ModelAndView mav = new ModelAndView("entryHistory");
         String userId = (String)session.getAttribute("userId");
         List<Entry> entriesList = entryService.getAllEntries(userId);
+        mav.addObject("entries", entriesList);
+        // System.out.println(userId);
+
+        return mav;
+    }
+
+    @GetMapping("/history/{entryId}")
+    public ModelAndView viewEntry() {
+        ModelAndView mav = new ModelAndView("entry");
 
         return mav;
     }

@@ -1,9 +1,12 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 
+import java.io.StringReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
@@ -11,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
@@ -70,7 +75,7 @@ public class EntryService {
         // System.out.println(entryToSave.getConsumptionTime().toString());
 
         JsonObject entryObjectToSave = entryToJson(entryToSave, formattedDate);
-        String hashKey = formattedDate + "|" + entryToSave.getEntryId();
+        String hashKey = "ENT|" + formattedDate + "|" + entryToSave.getEntryId();
         entryRepo.addToHash(userId, hashKey, entryObjectToSave.toString());
     }
 
@@ -105,20 +110,66 @@ public class EntryService {
     public List<Entry> getAllEntries(String userId) {
         List<Entry> entriesList = new ArrayList<>();
 
+        // System.out.println(Pattern.matches("\\d.*", "02-12-2024|9127ef86-4517-4145-80ac-0144f886f52e"));
+
         ScanOptions scanOps = ScanOptions.scanOptions()
-                .match("^(?!CUSTOM).*")
+                .match("ENT*")
                 .build();
 
         Cursor<java.util.Map.Entry<String, String>> entries = entryRepo.filter(userId, scanOps);
+        System.out.println("in get all entries");
+        System.out.println(scanOps.getCount());
+
 
         while(entries.hasNext()) {
+            System.out.println("in get all entries has next");
             java.util.Map.Entry<String, String> entry = entries.next();
             String entryString = entry.getValue();
-            // TODO mapping to Entry
+            System.out.println(entry.getKey());
+            
+            Entry e = stringToEntry(entryString);
+            entriesList.add(e);
         }
 
 
         return entriesList;
     }
+
+    public Entry stringToEntry(String entryString){
+        JsonReader jReader = Json.createReader(new StringReader(entryString));
+        JsonObject entryJObject = jReader.readObject();
+
+        Entry e = new Entry();
+
+        e.setEntryId(entryJObject.getString("entryId"));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Date consumptionDate = null;
+        try {
+            consumptionDate = sdf.parse(entryJObject.getString("consumptionDate"));
+        } catch (ParseException e1) {
+            System.out.println("Error in parsing consumption date in Entry Service stringToEntry!");
+            e1.printStackTrace();
+        }
+        e.setConsumptionDate(consumptionDate);
+        e.setConsumptionTime(LocalTime.parse(entryJObject.getString("consumptionTime")));
+
+        List<Food> foodConsumedList = new ArrayList<>();
+        JsonArray foodsArray = entryJObject.getJsonArray("foodsConsumed");
+        for (int i = 0; i < foodsArray.size(); i++) {
+            JsonObject fObject = foodsArray.getJsonObject(i);
+            Food f = new Food();
+            try {
+                f.setId(Long.valueOf(fObject.getString("id")));
+                f.setServingId(Long.valueOf(fObject.getString("servingId")));
+            } catch (Exception err) {
+                f.setCustomId(fObject.getString("customId"));
+            }
+            foodConsumedList.add(f);
+        }
+        e.setFoodsConsumed(foodConsumedList);
+
+        return e;
+    }
+    
 
 }

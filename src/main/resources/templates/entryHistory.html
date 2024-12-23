@@ -18,5 +18,28 @@
         </div>
         <button type="submit">Filter</button>
     </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Entry ID</th>
+                <th>Consumption Date</th>
+                <th>Consumption Time</th>
+                <!-- to decide if want to include food names -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- try to style rows with hover -->
+            <span th:each="e : ${entries}">
+                <tr>
+                    <td th:utext="${e.entryId}"></td>
+                    <td th:utext="${#dates.format(e.consumptionDate, 'dd/MM/yyyy')}"></td>
+                    <td th:utext="${e.consumptionTime}"></td>
+                    <td>
+                        <a th:href="@{/entries/history/{entryId} (entryId = ${e.entryId})}">View entry</a>
+                    </td>
+                </tr>
+            </span>
+        </tbody>
+    </table>
 </body>
 </html>
