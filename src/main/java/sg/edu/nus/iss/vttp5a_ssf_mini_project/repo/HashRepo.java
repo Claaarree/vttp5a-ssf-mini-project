@@ -1,12 +1,15 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.repo;
 
 import java.time.Duration;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Repository;
 
 import jakarta.annotation.PostConstruct;
@@ -55,6 +58,10 @@ public class HashRepo {
     public void expire(String redisKey, Long expireValue) {
         Duration expireDuration = Duration.ofSeconds(expireValue);
         redisTemplate.expire(redisKey, expireDuration);
+    }
+
+    public Cursor<Entry<String, String>> filter(String redisKey, ScanOptions scanOps) {
+        return hashOps.scan(redisKey, scanOps);
     }
     
 }

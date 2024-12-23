@@ -50,7 +50,7 @@ public class HomeController {
                 session.setAttribute("isAuthenticated", true);
                 session.setAttribute("userId", p.getId());
                 session.setAttribute("username", p.getName());
-                // TODO set mapping for homepage
+            
                 mav.setViewName("redirect:/home");
             }else {
                 // add error for wrong password

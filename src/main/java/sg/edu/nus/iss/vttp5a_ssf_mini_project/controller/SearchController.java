@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.FoodService;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.SearchService;
 
 @Controller
@@ -22,9 +23,15 @@ public class SearchController {
     @Autowired
     SearchService searchService;
 
+    @Autowired
+    FoodService foodService;
+
     @GetMapping()
-    public ModelAndView getSearch() {
+    public ModelAndView getSearch(HttpSession session) {
         ModelAndView mav = new ModelAndView("search");
+        String userId = (String) session.getAttribute("userId");
+        List<Food> customFoodsList = foodService.getAllCustomFoods(userId);
+        mav.addObject("foods", customFoodsList);
 
         return mav;
     }
@@ -64,6 +71,20 @@ public class SearchController {
             mav.addObject("entryId", e.getEntryId());
             session.setAttribute("entry", e);
         }
+
+        return mav;
+    }
+
+    @PostMapping("/customFood")
+    public ModelAndView getCustomFoods(@RequestParam String customSearch, HttpSession session) {
+        ModelAndView mav = new ModelAndView("search");
+
+        String userId = (String) session.getAttribute("userId");
+        
+        // can i get food by name?
+        List<Food> foodsFound = foodService.getFoodByName(customSearch, userId);
+
+        mav.addObject("foods", foodsFound);
 
         return mav;
     }

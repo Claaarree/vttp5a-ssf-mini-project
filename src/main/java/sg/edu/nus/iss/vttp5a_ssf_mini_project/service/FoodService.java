@@ -1,11 +1,21 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Service;
 
 import jakarta.json.Json;
+import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
 
@@ -47,4 +57,69 @@ public class FoodService {
 
         return foodObject;
     }
+
+    public List<Food> getAllCustomFoods(String userId) {
+        List<Food> customFoodsList = new ArrayList<>();
+
+        ScanOptions scanOps = ScanOptions.scanOptions()
+                .match("CUSTOM*")
+                .build();
+
+        Cursor<Entry<String, String>> customFoods = foodRepo.filter(userId, scanOps);
+        
+        while (customFoods.hasNext()){
+            Entry<String, String> customF = customFoods.next();
+            String foodString = customF.getValue();
+            Food f = jsonToFood(foodString);
+            customFoodsList.add(f);
+        }
+
+        return customFoodsList;
+    }
+
+    public Food jsonToFood(String foodString) {
+        JsonReader jReader = Json.createReader(new StringReader(foodString));
+        JsonObject foodObject = jReader.readObject();
+        
+        JsonArray allergensArray = foodObject.getJsonArray("allergens");
+        List<String> allergensList = new ArrayList<>();
+        for (int i = 0; i < allergensArray.size(); i++) {
+            String a = allergensArray.getString(i);
+            allergensList.add(a);
+        }
+      
+        Food f = new Food();
+
+        f.setId(Long.valueOf(foodObject.getString("id")));
+        f.setCustomId(foodObject.getString("customId"));
+        f.setType(foodObject.getString("type"));
+        f.setAllergens(allergensList);
+        f.setIsVegetarian(foodObject.getBoolean("isVegetarian"));
+        f.setIsVegan(foodObject.getBoolean("isVegan"));
+        f.setServingId(Long.valueOf(foodObject.getString("servingId")));
+        f.setServingDescription(foodObject.getString("servingDescription"));
+        f.setCalories(foodObject.getJsonNumber("calories").doubleValue());
+        f.setCarbohydrate(foodObject.getJsonNumber("carbohydrate").doubleValue());
+        f.setProtein(foodObject.getJsonNumber("protein").doubleValue());
+        f.setFat(foodObject.getJsonNumber("fat").doubleValue());
+        f.setUrl(foodObject.getString("url"));
+        f.setBrand(foodObject.getString("brand"));
+        f.setQuantity(foodObject.getInt("quantity"));
+
+        return f;
+    }
+
+    public List<Food> getFoodByName(String customSearch, String userId) {
+        List<Food> customFoodsList = getAllCustomFoods(userId);
+
+        List<Food> foodsFound = new ArrayList<>();
+        for (Food f : customFoodsList) {
+            if (f.getName().contains(customSearch)) {
+                foodsFound.add(f);
+            }
+        }
+
+        return foodsFound;
+    }
+
 }
