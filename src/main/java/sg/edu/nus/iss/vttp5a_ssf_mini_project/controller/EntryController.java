@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -143,4 +144,13 @@ public class EntryController {
         return mav;
     }
 
+    @GetMapping("/history")
+    public ModelAndView showEntryHistory(@RequestParam(required = false) MultiValueMap<String, String> range,
+    HttpSession session) {
+        ModelAndView mav = new ModelAndView("entryHistory");
+        String userId = (String)session.getAttribute("userId");
+        List<Entry> entriesList = entryService.getAllEntries(userId);
+
+        return mav;
+    }
 }

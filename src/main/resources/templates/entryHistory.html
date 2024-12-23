@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History</title>
+</head>
+<body>
+    <h2>Please select the date range of the entries you would like to see!</h2>
+    <form th:action="@{/entries/history}" method="get">
+        <div>
+            <label for="from">From: </label>
+            <input type="date" id="from" name="from">
+        </div>
+        <div>
+            <label for="to">To: </label>
+            <input type="date" id="to" name="to">
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+</body>
+</html>

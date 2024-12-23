@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
@@ -64,8 +66,8 @@ public class EntryService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = sdf.format(entryToSave.getConsumptionDate());
-        System.out.println(formattedDate);
-        System.out.println(entryToSave.getConsumptionTime().toString());
+        // System.out.println(formattedDate);
+        // System.out.println(entryToSave.getConsumptionTime().toString());
 
         JsonObject entryObjectToSave = entryToJson(entryToSave, formattedDate);
         String hashKey = formattedDate + "|" + entryToSave.getEntryId();
@@ -98,6 +100,25 @@ public class EntryService {
                 .build();
 
         return entryObject;
+    }
+
+    public List<Entry> getAllEntries(String userId) {
+        List<Entry> entriesList = new ArrayList<>();
+
+        ScanOptions scanOps = ScanOptions.scanOptions()
+                .match("^(?!CUSTOM).*")
+                .build();
+
+        Cursor<java.util.Map.Entry<String, String>> entries = entryRepo.filter(userId, scanOps);
+
+        while(entries.hasNext()) {
+            java.util.Map.Entry<String, String> entry = entries.next();
+            String entryString = entry.getValue();
+            // TODO mapping to Entry
+        }
+
+
+        return entriesList;
     }
 
 }

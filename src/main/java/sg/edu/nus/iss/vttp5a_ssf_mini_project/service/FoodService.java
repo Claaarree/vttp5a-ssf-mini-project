@@ -61,7 +61,7 @@ public class FoodService {
         List<Food> customFoodsList = new ArrayList<>();
 
         ScanOptions scanOps = ScanOptions.scanOptions()
-                .match("CUSTOM*")
+                .match("CUSTOM.+")
                 .build();
 
         Cursor<Entry<String, String>> customFoods = foodRepo.filter(userId, scanOps);
