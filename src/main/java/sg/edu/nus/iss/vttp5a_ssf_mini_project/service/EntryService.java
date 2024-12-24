@@ -159,12 +159,14 @@ public class EntryService {
         JsonArray foodsArray = entryJObject.getJsonArray("foodsConsumed");
         for (int i = 0; i < foodsArray.size(); i++) {
             JsonObject fObject = foodsArray.getJsonObject(i);
+            System.out.println(fObject.toString());
             Food f = new Food();
             try {
-                f.setId(Long.valueOf(fObject.getString("id")));
-                f.setServingId(Long.valueOf(fObject.getString("servingId")));
+                f.setId(fObject.getJsonNumber("id").longValueExact());
+                f.setServingId(fObject.getJsonNumber("servingId").longValueExact());
                 f.setQuantity(fObject.getInt("quantity"));
             } catch (Exception err) {
+                System.out.println("in catch");
                 f.setCustomId(fObject.getString("customId"));
                 f.setQuantity(fObject.getInt("quantity"));
             }

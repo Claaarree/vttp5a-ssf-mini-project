@@ -3,6 +3,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,7 +12,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Constants;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Parser;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Url;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
@@ -21,6 +21,9 @@ public class SearchService {
 
     @Autowired
     Parser parser;
+
+    @Value("${fatsecret.api.key}")
+    String apiKey;
 
     RestTemplate template = new RestTemplate();
 
@@ -47,7 +50,7 @@ public class SearchService {
                 .toUriString();
 
         RequestEntity<Void> req = RequestEntity.get(url)
-                .header("Authorization", "Bearer " + Constants.apiKey)
+                .header("Authorization", "Bearer " + apiKey)
                 .build();
         ResponseEntity<String> res = null;
         try {

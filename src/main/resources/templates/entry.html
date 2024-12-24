@@ -8,7 +8,7 @@
 <body>
     <p>Entry ID: <span th:utext="${entry.entryId}"></span></p>
     <p>Consumption Date: <span th:utext="${#dates.format(entry.consumptionDate, 'dd/MM/yyyy')}"></span></p>
-    <p>Consumption Time: <span th:utext="${entry.time}"></span></p>
+    <p>Consumption Time: <span th:utext="${entry.consumptionTime}"></span></p>
     <p>Foods consumed</p>
     <table>
         <thead>
@@ -34,7 +34,7 @@
                     <td th:utext="${food.carbohydrate}"></td>
                     <td th:utext="${food.protein}"></td>
                     <td th:utext="${food.fat}"></td>
-                    <td the:utext="${food.quantity}"></td>
+                    <td th:utext="${food.quantity}"></td>
                 </tr>
             </span>
         </tbody>

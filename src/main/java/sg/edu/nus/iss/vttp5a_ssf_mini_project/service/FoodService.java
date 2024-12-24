@@ -3,6 +3,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.http.RequestEntity;
@@ -12,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.JsonObject;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Constants;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Parser;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Url;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
@@ -27,6 +27,9 @@ public class FoodService {
 
     @Autowired
     Parser parser;
+
+    @Value("${fatsecret.api.key}")
+    String apiKey;
 
     RestTemplate template = new RestTemplate();
 
@@ -74,23 +77,9 @@ public class FoodService {
         for (Food f: foodsConsumedId) {
             Food fd = new Food();
             if(f.getId() != null) {
-                String url = UriComponentsBuilder.fromUriString(Url.baseUrl)
-                        .path(Url.getById)
-                        .queryParam("food_id", f.getId())
-                        .queryParam("format", "json")
-                        .queryParam("flag_default_serving", "true")
-                        .queryParam("include_food_attributes", "true")
-                        .toUriString();
 
-                RequestEntity<Void> req = RequestEntity.get(url)
-                        .header("Authorization", "Bearer " + Constants.apiKey)
-                        .build();
-                ResponseEntity <String> res = null;
-                try {
-                    res = template.exchange(req, String.class);
-                } catch (Exception err) {
-                    System.out.println("error in getting data from external api");
-                }
+                ResponseEntity<String> res = getRESTfoodByID(f.getId());
+                
                 fd = parser.externalJsonToFoodById(res.getBody());
                         
             } else {
@@ -112,6 +101,27 @@ public class FoodService {
         }
         
         return foodsConsumedDetails;
+    }
+
+    public ResponseEntity<String> getRESTfoodByID(Long id) {
+        String url = UriComponentsBuilder.fromUriString(Url.baseUrl)
+        .path(Url.getById)
+        .queryParam("food_id", id)
+        .queryParam("format", "json")
+        .queryParam("flag_default_serving", "true")
+        .queryParam("include_food_attributes", "true")
+        .toUriString();
+
+        RequestEntity<Void> req = RequestEntity.get(url)
+                .header("Authorization", "Bearer " + apiKey)
+                .build();
+        ResponseEntity <String> res = null;
+        try {
+            res = template.exchange(req, String.class);
+        } catch (Exception err) {
+            System.out.println("error in getting data from external api");
+        }
+        return res;
     }
 
 }

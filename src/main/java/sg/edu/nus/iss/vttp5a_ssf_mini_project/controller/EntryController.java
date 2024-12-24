@@ -129,17 +129,17 @@ public class EntryController {
             }
         }
         
+        e.setFoodsConsumed(entry.getFoodsConsumed());
+        
         if (results.hasErrors()){
             mav.setViewName("addEntry");
             e.setEntryId(entry.getEntryId());
-            e.setFoodsConsumed(entry.getFoodsConsumed());
         
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
             mav.setViewName("redirect:/home");
-            e.setFoodsConsumed(entry.getFoodsConsumed());
             
-            // System.out.println(e);
+            System.out.println(e);
             // save entry to redis
             String userId = (String)session.getAttribute("userId");
             entryService.saveEntry(userId, e);
@@ -169,7 +169,9 @@ public class EntryController {
         String userId = (String)session.getAttribute("userId");
         Entry entryFound = entryService.getEntryById(entryId, userId);
         //TODO test if this works
-        entryFound.setFoodsConsumed(foodService.requestForFoodsById(userId, entryFound));
+        List<Food> foodsConsumedList = foodService.requestForFoodsById(userId, entryFound);
+        entryFound.setFoodsConsumed(foodsConsumedList);
+        System.out.println(entryFound);
         mav.addObject("entry", entryFound);
 
         return mav;

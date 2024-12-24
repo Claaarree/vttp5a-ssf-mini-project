@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.FoodService;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.SearchService;
 
 @RestController
@@ -18,6 +19,9 @@ public class TestRestController {
     @Autowired
     SearchService testService;
 
+    @Autowired
+    FoodService foodService;
+
     @GetMapping
     public ResponseEntity<String> getSearch() {
         return testService.getRESTSearch("bread", "0");
@@ -26,5 +30,10 @@ public class TestRestController {
     @GetMapping("/list")
     public List<Food> showJSONMapping() {
         return testService.getSearch("bread", "0");
+    }
+
+    @GetMapping("/id")
+    public ResponseEntity<String> getFoodById() {
+        return foodService.getRESTfoodByID(33691L);
     }
 }
