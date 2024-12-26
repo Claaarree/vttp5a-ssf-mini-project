@@ -43,6 +43,9 @@
                                     <input type="number" th:field="*{foodsConsumed[__${iterStat.index}__].quantity}">
                                     <span th:if="${#fields.hasErrors('foodsConsumed[__${iterStat.index}__].quantity')}" th:errors="*{foodsConsumed[__${iterStat.index}__].quantity}"></span>                                  
                                 </td>
+                                <td>
+                                    <a th:href="@{/entries/remove/{foodName} (foodName=${food.name})}">Remove</a>
+                                </td>
                             </tr>
                         </span>
                     </tbody>

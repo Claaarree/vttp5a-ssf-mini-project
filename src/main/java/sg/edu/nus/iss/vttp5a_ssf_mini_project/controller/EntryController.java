@@ -79,7 +79,7 @@ public class EntryController {
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
         Boolean isDuplicate = false;
         for(Food food: foodsConsumedList){
-            if (f.getName().equalsIgnoreCase(food.getName())){
+            if (f.getName().equals(food.getName())){
                 String duplicateError = "Please do not add duplicated foods! Increase the quantity instead!";
                 mav.addObject("duplicateError", duplicateError);
                 isDuplicate = true;
@@ -94,6 +94,25 @@ public class EntryController {
         session.setAttribute("entry", entry);
         mav.addObject("entry", entry);
 
+        return mav;
+    }
+
+    @GetMapping("/remove/{foodName}")
+    public ModelAndView removeFoodItem(@PathVariable String foodName, HttpSession session) {
+        ModelAndView mav = new ModelAndView("redirect:/entries/new/{entryId}");
+        Entry entry = (Entry)session.getAttribute("entry");
+        mav.addObject("entryId", entry.getEntryId());
+
+        List<Food> foodsConsumedList = entry.getFoodsConsumed();
+        foodsConsumedList.removeIf(f -> f.getName().equals(foodName));
+        // concurrent modification exception why? but the above works?
+        // for (Food f : foodsConsumedList) {
+        //     if (f.getName().equals(foodName)) {
+        //         foodsConsumedList.remove(f);
+        //     }
+        // }
+        session.setAttribute("entry", entry);
+        mav.addObject("entry", entry);
         return mav;
     }
 
@@ -168,7 +187,7 @@ public class EntryController {
         ModelAndView mav = new ModelAndView("entry");
         String userId = (String)session.getAttribute("userId");
         Entry entryFound = entryService.getEntryById(entryId, userId);
-        //TODO test if this works
+
         List<Food> foodsConsumedList = foodService.requestForFoodsById(userId, entryFound);
         entryFound.setFoodsConsumed(foodsConsumedList);
         System.out.println(entryFound);
