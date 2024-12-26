@@ -12,7 +12,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Parser;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.FoodParser;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Url;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 
@@ -20,7 +20,7 @@ import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 public class SearchService {
 
     @Autowired
-    Parser parser;
+    FoodParser foodParser;
 
     @Value("${fatsecret.api.key}")
     String apiKey;
@@ -30,7 +30,7 @@ public class SearchService {
     public List<Food> getSearch(String searchTerm, String pageNumber) {
         ResponseEntity<String> res = getRESTSearch(searchTerm, pageNumber);
     
-        return parser.externalJsonToFood(res.getBody());
+        return foodParser.externalJsonToFood(res.getBody());
     }
 
     public ResponseEntity<String> getRESTSearch(String searchTerm, String pageNumber) {

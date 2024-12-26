@@ -9,11 +9,12 @@ import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.JsonObject;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Parser;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.FoodParser;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Url;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
@@ -26,7 +27,7 @@ public class FoodService {
     HashRepo foodRepo;
 
     @Autowired
-    Parser parser;
+    FoodParser foodParser;
 
     @Value("${fatsecret.api.key}")
     String apiKey;
@@ -34,7 +35,7 @@ public class FoodService {
     RestTemplate template = new RestTemplate();
 
     public void saveCustomFood(Food f, String userId) {
-        JsonObject foodObject = parser.foodToJson(f);
+        JsonObject foodObject = foodParser.foodToJson(f);
 
         foodRepo.addToHash(userId, f.getCustomId(), foodObject.toString());
     }
@@ -51,7 +52,7 @@ public class FoodService {
         while (customFoods.hasNext()){
             java.util.Map.Entry<String, String> customF = customFoods.next();
             String foodString = customF.getValue();
-            Food f = parser.jsonToFood(foodString);
+            Food f = foodParser.jsonToFood(foodString);
             customFoodsList.add(f);
         }
 
@@ -80,7 +81,7 @@ public class FoodService {
 
                 ResponseEntity<String> res = getRESTfoodByID(f.getId());
                 
-                fd = parser.externalJsonToFoodById(res.getBody());
+                fd = foodParser.externalJsonToFoodById(res.getBody());
                         
             } else {
                 // TODO implement get by customid from redis use the cursor
@@ -94,7 +95,7 @@ public class FoodService {
                 // System.out.println(foodFound.hasNext());
 
                 String foodString = foodFound.next().getValue();
-                fd = parser.jsonToFood(foodString);
+                fd = foodParser.jsonToFood(foodString);
             }
             fd.setQuantity(f.getQuantity());
             foodsConsumedDetails.add(fd);
@@ -122,6 +123,10 @@ public class FoodService {
             System.out.println("error in getting data from external api");
         }
         return res;
+    }
+
+    public Food mapToFoodObject(MultiValueMap<String, String> map) {
+        return foodParser.mapToFoodObject(map);
     }
 
 }

@@ -65,7 +65,7 @@ public class EntryController {
     
     @PostMapping("/new/{entryId}")
     public ModelAndView addFoodToEntry(@RequestBody MultiValueMap<String, String> map, HttpSession session) {             
-        Food f = entryService.mapToFoodObject(map);
+        Food f = foodService.mapToFoodObject(map);
 
         Entry entry = (Entry)session.getAttribute("entry");
         ModelAndView mav = new ModelAndView("addEntry");
@@ -157,7 +157,7 @@ public class EntryController {
             // System.out.println(e);
             // save entry to redis
             String userId = (String)session.getAttribute("userId");
-            if (e.getConsumptionDate() != entry.getConsumptionDate()){
+            if (e.getConsumptionDate() != entry.getConsumptionDate() && entry.getConsumptionDate() != null){
                 entryService.deleteEntry(e.getEntryId(), userId);
             }
             entryService.saveEntry(userId, e);
