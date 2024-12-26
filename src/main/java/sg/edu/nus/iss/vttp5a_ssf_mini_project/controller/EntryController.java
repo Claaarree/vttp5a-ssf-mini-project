@@ -175,10 +175,12 @@ public class EntryController {
         ModelAndView mav = new ModelAndView("entryHistory");
         String userId = (String)session.getAttribute("userId");
         List<Entry> entriesList = entryService.getAllEntries(userId);
-        mav.addObject("entries", entriesList);
+
         // System.out.println(userId);
         // TODO set up method for date range filter
-
+        entriesList = entryService.filterDates(entriesList, range);
+        
+        mav.addObject("entries", entriesList);
         return mav;
     }
 

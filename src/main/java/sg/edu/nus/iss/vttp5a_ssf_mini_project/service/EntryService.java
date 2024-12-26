@@ -3,10 +3,14 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.ScanOptions;
@@ -119,12 +123,9 @@ public class EntryService {
                 .build();
 
         Cursor<java.util.Map.Entry<String, String>> entries = entryRepo.filter(userId, scanOps);
-        System.out.println("in get all entries");
-        System.out.println(scanOps.getCount());
 
 
         while(entries.hasNext()) {
-            System.out.println("in get all entries has next");
             java.util.Map.Entry<String, String> entry = entries.next();
             String entryString = entry.getValue();
             // System.out.println(entry.getKey());
@@ -159,14 +160,14 @@ public class EntryService {
         JsonArray foodsArray = entryJObject.getJsonArray("foodsConsumed");
         for (int i = 0; i < foodsArray.size(); i++) {
             JsonObject fObject = foodsArray.getJsonObject(i);
-            System.out.println(fObject.toString());
+       
             Food f = new Food();
             try {
                 f.setId(fObject.getJsonNumber("id").longValueExact());
                 f.setServingId(fObject.getJsonNumber("servingId").longValueExact());
                 f.setQuantity(fObject.getInt("quantity"));
             } catch (Exception err) {
-                System.out.println("in catch");
+             
                 f.setCustomId(fObject.getString("customId"));
                 f.setQuantity(fObject.getInt("quantity"));
             }
@@ -189,5 +190,38 @@ public class EntryService {
         String entryString = entryFound.next().getValue();
 
         return stringToEntry(entryString);
+    }
+
+    public List<Entry> filterDates(List<Entry> entriesList, 
+    MultiValueMap<String, String> datesMap) {
+        String from = datesMap.getFirst("from");
+        String to = datesMap.getFirst("to");
+
+        // does the pattern below correspond to the one in the model? does the pattern matter?
+        // pattern matters and matches format in the model
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+  
+        Date fromDate;
+        Date toDate;
+        try {
+
+            fromDate = sdf.parse(LocalDate.parse(from).minusDays(1).toString());
+            toDate = sdf.parse(LocalDate.parse(to).plusDays(1).toString());          
+            
+
+            // is there a way to combine these 2 lines?
+            
+            entriesList = entriesList.stream().filter(e -> e.getConsumptionDate().before(toDate))
+                    .collect(Collectors.toList());
+            
+            entriesList = entriesList.stream().filter(e -> e.getConsumptionDate().after(fromDate))
+            .collect(Collectors.toList());
+
+
+        } catch (Exception e) {
+            System.out.println("Error parsing dates in filter dates!");
+        }
+
+        return entriesList;        
     }
 }
