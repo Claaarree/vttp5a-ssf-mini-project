@@ -192,8 +192,51 @@ public class EntryController {
 
         List<Food> foodsConsumedList = foodService.requestForFoodsById(userId, entryFound);
         entryFound.setFoodsConsumed(foodsConsumedList);
-        System.out.println(entryFound);
+        // System.out.println(entryFound);
         mav.addObject("entry", entryFound);
+
+        return mav;
+    }
+
+    @GetMapping("/edit/{entryId}")
+    public ModelAndView editEntry(@PathVariable String entryId, HttpSession session) {
+        ModelAndView mav = new ModelAndView("editEntry");
+        String userId = (String)session.getAttribute("userId");
+        Entry entryFound = entryService.getEntryById(entryId, userId);
+        entryFound.setFoodsConsumed(foodService.requestForFoodsById(userId, entryFound));
+        System.out.println(entryFound.getFoodsConsumed() + " in edit");
+
+        mav.addObject("entry", entryFound);
+        return mav;
+    }
+
+    @PostMapping("/save/{entryId}")
+    public ModelAndView saveEditEntry(@Valid @ModelAttribute Entry e, BindingResult results, 
+    HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        // check if foods consumed is empty
+
+        if (results.hasErrors()){
+            mav.setViewName("editEntry");
+        
+        } else {
+            // TODO change redirect to homepage once set up or maybe a successfully saved page
+            mav.setViewName("redirect:/home");
+            
+            System.out.println(e);
+            // save entry to redis
+            String userId = (String)session.getAttribute("userId");
+            entryService.saveEntry(userId, e);
+        }
+
+        return mav;
+    }
+
+    @GetMapping("/delete/{entryID}")
+    public ModelAndView deleteEntry(@PathVariable String entryId, HttpSession session) {
+        ModelAndView mav = new ModelAndView("redirect:/home");
+        String userId = (String)session.getAttribute("userId");
+        entryService.deleteEntry(entryId, userId);
 
         return mav;
     }

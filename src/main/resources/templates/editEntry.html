@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Entry</title>
+</head>
+<body>
+    <h2>Edit your entry!</h2>
+    <form method="post" th:action="@{/entries/save/{entryId} (entryId = ${entry.entryId})}" th:object="${entry}">
+        <div>
+            <p>Foods Consumed:</p>
+            <span th:unless="${#lists.isEmpty(entry.foodsConsumed)}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Name</th>
+                            <th rowspan="2">Serving Size</th>
+                            <th colspan="4">Macronutrients</th>
+                            <th rowspan="2">Quantity</th>
+                        </tr>
+                        <tr>
+                            <th>Calories</th>
+                            <th>Carbohydrate</th>
+                            <th>Protein</th>
+                            <th>Fat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <span th:each="food, iterStat : *{foodsConsumed}">
+                            <tr>
+                                <td th:utext="${food.name}"></td>
+                                <td th:utext="${food.servingDescription}"></td>
+                                <td th:utext="${food.calories}"></td>
+                                <td th:utext="${food.carbohydrate}"></td>
+                                <td th:utext="${food.protein}"></td>
+                                <td th:utext="${food.fat}"></td>
+                                <td>
+                                    <input type="number" th:field="*{foodsConsumed[__${iterStat.index}__].quantity}">
+                                    <span th:if="${#fields.hasErrors('foodsConsumed[__${iterStat.index}__].quantity')}" th:errors="*{foodsConsumed[__${iterStat.index}__].quantity}"></span>                                  
+                                </td>
+                                <td>
+                                    <a th:href="@{/entries/remove/{foodName} (foodName=${food.name})}">Remove</a>
+                                </td>
+                            </tr>
+                        </span>
+                    </tbody>
+                </table>
+                <p th:if="${duplicateError}" th:text="${duplicateError}"></p>
+            </span>           
+            <a th:href="@{/search}">Search for a food to add here!</a>
+        </div>
+        <br>
+        <div>
+            <label for="consumptionDate">Date of Consumption:</label>
+            <input type="date" id="consumptionDate" th:field="*{consumptionDate}">
+            <span th:if="${#fields.hasErrors('consumptionDate')}" th:errors="*{consumptionDate}"></span>
+        </div>
+        <div>
+            <label for="consumptionTime">Time of Consumption:</label>
+            <input type="time" id="consumptionTime" th:field="*{consumptionTime}">
+            <span th:if="${#fields.hasErrors('consumptionTime')}" th:errors="*{consumptionTime}"></span>
+        </div>
+        <div>
+            <label for="entryId">Entry ID:</label>
+            <!-- figure out way to make this greyed out during styling -->
+            <!-- maybe just hide it? -->
+            <input type="text" id="entryId" th:field="*{entryId}" readonly>
+        </div>
+        <br>
+        <button type="submit">Save</button>
+    </form>
+</body>
+</html>

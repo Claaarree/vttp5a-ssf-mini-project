@@ -30,7 +30,7 @@ public class HashRepo {
     }
     
     public void addToHash(String redisKey, String field, String value) {
-        redisTemplate.opsForHash().putIfAbsent(redisKey, field, value);
+        redisTemplate.opsForHash().put(redisKey, field, value);
     }
 
     public String getFieldValue(String redisKey, String field) {

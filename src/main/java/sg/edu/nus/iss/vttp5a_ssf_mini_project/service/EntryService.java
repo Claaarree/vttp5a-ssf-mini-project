@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,8 +37,6 @@ public class EntryService {
 
         Food f = new Food();
 
-        // System.out.println("foodToAdd[0] " + foodToAdd[0]);
-        // System.out.println("foodToAdd[7] " + foodToAdd[7]);
         if (!foodToAdd[0].equals("null") && !foodToAdd[7].equals("null")) {
             f.setId(Long.parseLong(foodToAdd[0]));
             f.setServingId(Long.parseLong(foodToAdd[7]));
@@ -75,8 +72,6 @@ public class EntryService {
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         String formattedDate = sdf.format(entryToSave.getConsumptionDate());
-        // System.out.println(formattedDate);
-        // System.out.println(entryToSave.getConsumptionTime().toString());
 
         JsonObject entryObjectToSave = entryToJson(entryToSave, formattedDate);
         String hashKey = "ENT|" + formattedDate + "|" + entryToSave.getEntryId();
@@ -185,7 +180,7 @@ public class EntryService {
         
         Cursor<java.util.Map.Entry<String, String>> entryFound = entryRepo.filter(userId, scanOpts);
 
-        System.out.println(entryFound.hasNext());
+        // System.out.println(entryFound.hasNext());
 
         String entryString = entryFound.next().getValue();
 
@@ -223,5 +218,14 @@ public class EntryService {
         }
 
         return entriesList;        
+    }
+
+    public void deleteEntry(String entryId, String userId) {
+        ScanOptions scanOpts = ScanOptions.scanOptions()
+                .match("*" + entryId)
+                .build();
+        
+        Cursor<java.util.Map.Entry<String, String>> entryFound = entryRepo.filter(userId, scanOpts);
+        entryRepo.deleteField(userId, entryFound.next().getKey());
     }
 }

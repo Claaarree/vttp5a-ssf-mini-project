@@ -6,6 +6,8 @@
     <title>Entry</title>
 </head>
 <body>
+    <a th:href="@{/entries/edit/{entryId} (entryId = ${entry.entryId})}">Edit</a>
+    <a th:href="@{/entries/delete/{entryId} (entryId = ${entry.entryId})}">Delete</a>
     <p>Entry ID: <span th:utext="${entry.entryId}"></span></p>
     <p>Consumption Date: <span th:utext="${#dates.format(entry.consumptionDate, 'dd/MM/yyyy')}"></span></p>
     <p>Consumption Time: <span th:utext="${entry.consumptionTime}"></span></p>
