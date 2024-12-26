@@ -87,6 +87,7 @@ public class HomeController {
             byte[] passwordPT = p.getPassword().getBytes();
             String encodedPw = Base64.getEncoder().withoutPadding().encodeToString(passwordPT);
             p.setPassword(encodedPw);
+            
             //save profile to redis
             homeService.saveProfile(p);
             // System.out.println(p.toString());

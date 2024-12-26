@@ -1,10 +1,8 @@
 package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 
-import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,15 +15,10 @@ import org.springframework.data.redis.core.ScanOptions;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
-import jakarta.json.Json;
-import jakarta.json.JsonArray;
-import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import jakarta.json.JsonReader;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.EntryParser;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.exception.FilterDateException;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
 
 @Service
@@ -49,15 +42,7 @@ public class EntryService {
 
     public List<Entry> getAllEntries(String userId) {
         List<Entry> entriesList = new ArrayList<>();
-
-        // System.out.println(Pattern.matches("\\d.*", "02-12-2024|9127ef86-4517-4145-80ac-0144f886f52e"));
-
-        ScanOptions scanOps = ScanOptions.scanOptions()
-                .match("ENT*")
-                .build();
-
-        Cursor<java.util.Map.Entry<String, String>> entries = entryRepo.filter(userId, scanOps);
-
+        Cursor<java.util.Map.Entry<String, String>> entries = getCursor("ENT*", userId);
 
         while(entries.hasNext()) {
             java.util.Map.Entry<String, String> entry = entries.next();
@@ -71,16 +56,9 @@ public class EntryService {
 
         return entriesList;
     }
-
-   
     
     public Entry getEntryById(String entryId, String userId) {
-        ScanOptions scanOpts = ScanOptions.scanOptions()
-                .match("*" + entryId)
-                .build();
-        
-        Cursor<java.util.Map.Entry<String, String>> entryFound = entryRepo.filter(userId, scanOpts);
-
+        Cursor<java.util.Map.Entry<String, String>> entryFound = getCursor("*" + entryId, userId);
         // System.out.println(entryFound.hasNext());
 
         String entryString = entryFound.next().getValue();
@@ -126,12 +104,16 @@ public class EntryService {
         return entriesList;        
     }
 
-    public void deleteEntry(String entryId, String userId) {
-        ScanOptions scanOpts = ScanOptions.scanOptions()
-                .match("*" + entryId)
-                .build();
-        
-        Cursor<java.util.Map.Entry<String, String>> entryFound = entryRepo.filter(userId, scanOpts);
+    public void deleteEntry(String entryId, String userId) {       
+        Cursor<java.util.Map.Entry<String, String>> entryFound = getCursor("*" + entryId, userId);
         entryRepo.deleteField(userId, entryFound.next().getKey());
+    }
+
+    public Cursor<java.util.Map.Entry<String, String>> getCursor (String pattern, String userId) {
+        ScanOptions scanOpts = ScanOptions.scanOptions()
+        .match(pattern)
+        .build();
+
+        return entryRepo.filter(userId, scanOpts);
     }
 }

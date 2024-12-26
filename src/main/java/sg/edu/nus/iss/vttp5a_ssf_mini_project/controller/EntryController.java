@@ -69,14 +69,7 @@ public class EntryController {
 
         Entry entry = (Entry)session.getAttribute("entry");
         ModelAndView mav = new ModelAndView("addEntry");
-        // if(entry != null) {
-        //     String entryId = entry.getEntryId();
-        //     mav.addObject("entryId", entryId);
-        // } else {
-        //     Entry e = new Entry();
-        //     mav.addObject("entryId", e.getEntryId());
-        //     session.setAttribute("entry", e);
-        // }
+       
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
         Boolean isDuplicate = false;
         for(Food food: foodsConsumedList){
@@ -216,9 +209,9 @@ public class EntryController {
     public ModelAndView saveEditEntry(@Valid @ModelAttribute Entry e, BindingResult results, 
     HttpSession session) {
         ModelAndView mav = new ModelAndView();
-        System.out.println("in save entry");
-        System.out.println(e.getConsumptionDate() + "in save entry");
-        System.out.println("after trying to print");
+        // System.out.println("in save entry");
+        // System.out.println(e.getConsumptionDate() + "in save entry");
+        // System.out.println("after trying to print");
 
         // check if foods consumed is empty
         if (e.getFoodsConsumed().isEmpty()) {

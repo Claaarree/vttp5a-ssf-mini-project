@@ -63,7 +63,7 @@ public class EntryParser {
         try {
             consumptionDate = sdf.parse(entryJObject.getString("consumptionDate"));
         } catch (ParseException e1) {
-            System.out.println("Error in parsing consumption date in Entry Service stringToEntry!");
+            System.out.println("Error in parsing consumption date in Entry parser stringToEntry!");
             e1.printStackTrace();
         }
         e.setConsumptionDate(consumptionDate);

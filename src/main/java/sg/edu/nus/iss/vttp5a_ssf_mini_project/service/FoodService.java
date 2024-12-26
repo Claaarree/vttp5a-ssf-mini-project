@@ -42,13 +42,8 @@ public class FoodService {
 
     public List<Food> getAllCustomFoods(String userId) {
         List<Food> customFoodsList = new ArrayList<>();
+        Cursor<java.util.Map.Entry<String, String>> customFoods = getCursor("CUSTOM*", userId);
 
-        ScanOptions scanOps = ScanOptions.scanOptions()
-                .match("CUSTOM*")
-                .build();
-
-        Cursor<java.util.Map.Entry<String, String>> customFoods = foodRepo.filter(userId, scanOps);
-        
         while (customFoods.hasNext()){
             java.util.Map.Entry<String, String> customF = customFoods.next();
             String foodString = customF.getValue();
@@ -84,15 +79,7 @@ public class FoodService {
                 fd = foodParser.externalJsonToFoodById(res.getBody());
                         
             } else {
-                // TODO implement get by customid from redis use the cursor
-                // maybe abstract below??
-                ScanOptions scanOpts = ScanOptions.scanOptions()
-                .match("*" + f.getCustomId())
-                .build();
-                
-                Cursor<java.util.Map.Entry<String, String>> foodFound = foodRepo.filter(userId, scanOpts);
-
-                // System.out.println(foodFound.hasNext());
+                Cursor<java.util.Map.Entry<String, String>> foodFound = getCursor("*" + f.getCustomId(), userId);
 
                 String foodString = foodFound.next().getValue();
                 fd = foodParser.jsonToFood(foodString);
@@ -127,6 +114,14 @@ public class FoodService {
 
     public Food mapToFoodObject(MultiValueMap<String, String> map) {
         return foodParser.mapToFoodObject(map);
+    }
+
+    public Cursor<java.util.Map.Entry<String, String>> getCursor(String pattern, String userId) {
+        ScanOptions scanOpts = ScanOptions.scanOptions()
+        .match(pattern)
+        .build();
+        
+       return foodRepo.filter(userId, scanOpts);
     }
 
 }

@@ -27,12 +27,7 @@ public class FoodController {
     @GetMapping("/new")
     public ModelAndView newFoodForm(HttpSession session) {
         ModelAndView mav = new ModelAndView("foodForm");
-        Food f = new Food();
-        // later on can check if is id NaN
-        // need to convert back to double first...
-        // maybe if I don't set it then i can chekc for null?
-        // f.setId(Double.doubleToLongBits(Math.sqrt(-1)));
-    
+        Food f = new Food();    
         mav.addObject("food", f);
         Entry entry = (Entry)session.getAttribute("entry");
 
