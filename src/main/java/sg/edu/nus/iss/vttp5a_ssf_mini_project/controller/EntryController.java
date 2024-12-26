@@ -20,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.exception.FilterDateException;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.EntryService;
@@ -105,12 +106,7 @@ public class EntryController {
 
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
         foodsConsumedList.removeIf(f -> f.getName().equals(foodName));
-        // concurrent modification exception why? but the above works?
-        // for (Food f : foodsConsumedList) {
-        //     if (f.getName().equals(foodName)) {
-        //         foodsConsumedList.remove(f);
-        //     }
-        // }
+        
         session.setAttribute("entry", entry);
         mav.addObject("entry", entry);
         return mav;
@@ -158,11 +154,13 @@ public class EntryController {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
             mav.setViewName("redirect:/home");
             
-            System.out.println(e);
+            // System.out.println(e);
             // save entry to redis
             String userId = (String)session.getAttribute("userId");
+            if (e.getConsumptionDate() != entry.getConsumptionDate()){
+                entryService.deleteEntry(e.getEntryId(), userId);
+            }
             entryService.saveEntry(userId, e);
-
             session.removeAttribute("entry");
         }
 
@@ -177,8 +175,11 @@ public class EntryController {
         List<Entry> entriesList = entryService.getAllEntries(userId);
 
         // System.out.println(userId);
-        // TODO set up method for date range filter
-        entriesList = entryService.filterDates(entriesList, range);
+        try {
+            entriesList = entryService.filterDates(entriesList, range);
+        } catch (FilterDateException e) {
+            mav.addObject("date", e.getMessage());
+        }
         
         mav.addObject("entries", entriesList);
         return mav;
@@ -206,6 +207,7 @@ public class EntryController {
         entryFound.setFoodsConsumed(foodService.requestForFoodsById(userId, entryFound));
         System.out.println(entryFound.getFoodsConsumed() + " in edit");
 
+        session.setAttribute("entry", entryFound);
         mav.addObject("entry", entryFound);
         return mav;
     }
@@ -214,10 +216,23 @@ public class EntryController {
     public ModelAndView saveEditEntry(@Valid @ModelAttribute Entry e, BindingResult results, 
     HttpSession session) {
         ModelAndView mav = new ModelAndView();
+        System.out.println("in save entry");
+        System.out.println(e.getConsumptionDate() + "in save entry");
+        System.out.println("after trying to print");
+
         // check if foods consumed is empty
+        if (e.getFoodsConsumed().isEmpty()) {
+            ObjectError noFoodError = new ObjectError("entry", 
+            """
+                The entry must have at least one food item. \n
+                Please delete the entry otherwise!
+                    """);
+            results.addError(noFoodError);
+        }
 
         if (results.hasErrors()){
             mav.setViewName("editEntry");
+            System.out.println("in results has errors");
         
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
@@ -227,12 +242,13 @@ public class EntryController {
             // save entry to redis
             String userId = (String)session.getAttribute("userId");
             entryService.saveEntry(userId, e);
+        
         }
 
         return mav;
     }
 
-    @GetMapping("/delete/{entryID}")
+    @GetMapping("/delete/{entryId}")
     public ModelAndView deleteEntry(@PathVariable String entryId, HttpSession session) {
         ModelAndView mav = new ModelAndView("redirect:/home");
         String userId = (String)session.getAttribute("userId");

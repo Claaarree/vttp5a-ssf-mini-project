@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Entry</title>
+    <title>Entry</title>
 </head>
 <body>
-    <h2>Edit your entry!</h2>
-    <form method="post" th:action="@{/entries/save/{entryId} (entryId = ${entry.entryId})}" th:object="${entry}">
+    <!-- <h2>Edit your entry!</h2> -->
+    <form method="post" th:action="@{/entries/add}" th:object="${entry}">
+        <span th:if="${#fields.hasErrors('global')}">
+            <p th:each="err :${#fields.errors('global')}" th:utext="${err}"></p>
+        </span>
         <div>
             <p>Foods Consumed:</p>
             <span th:unless="${#lists.isEmpty(entry.foodsConsumed)}">

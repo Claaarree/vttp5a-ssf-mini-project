@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import jakarta.json.JsonReader;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.exception.FilterDateException;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
@@ -188,7 +190,7 @@ public class EntryService {
     }
 
     public List<Entry> filterDates(List<Entry> entriesList, 
-    MultiValueMap<String, String> datesMap) {
+    MultiValueMap<String, String> datesMap) throws FilterDateException {
         String from = datesMap.getFirst("from");
         String to = datesMap.getFirst("to");
 
@@ -203,6 +205,9 @@ public class EntryService {
             fromDate = sdf.parse(LocalDate.parse(from).minusDays(1).toString());
             toDate = sdf.parse(LocalDate.parse(to).plusDays(1).toString());          
             
+            if (toDate.before(fromDate) && toDate != null){
+                throw new FilterDateException("The to date has to be after the from date!");
+            }
 
             // is there a way to combine these 2 lines?
             
@@ -213,8 +218,12 @@ public class EntryService {
             .collect(Collectors.toList());
 
 
-        } catch (Exception e) {
-            System.out.println("Error parsing dates in filter dates!");
+        } catch (DateTimeParseException dtpe) {
+            System.out.println("Error parsing dates in filter dates! DTPE");
+        } catch (NullPointerException ne) {
+            System.out.println("No dates found in date range!");
+        } catch (ParseException pe) {
+            System.out.println("Error parsing dates in filter dates! PE");
         }
 
         return entriesList;        

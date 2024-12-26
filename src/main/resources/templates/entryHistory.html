@@ -16,8 +16,12 @@
             <label for="to">To: </label>
             <input type="date" id="to" name="to">
         </div>
+        <p th:if="${date}" th:utext="${date}"></p>
         <button type="submit">Filter</button>
+        <a th:href="@{/entries/history}">Clear filter</a>
     </form>
+    <p th:if="${#lists.isEmpty(entries)}">There are no entries in the specified date range! <br>
+    Please try another range!</p>
     <table>
         <thead>
             <tr>
