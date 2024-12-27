@@ -145,7 +145,7 @@ public class EntryController {
         
         } else {
             // TODO change redirect to homepage once set up or maybe a successfully saved page
-            mav.setViewName("redirect:/home");
+            mav.setViewName("redirect:/");
             
             // System.out.println(e);
             // save entry to redis
@@ -243,7 +243,7 @@ public class EntryController {
 
     @GetMapping("/delete/{entryId}")
     public ModelAndView deleteEntry(@PathVariable String entryId, HttpSession session) {
-        ModelAndView mav = new ModelAndView("redirect:/home");
+        ModelAndView mav = new ModelAndView("redirect:/");
         String userId = (String)session.getAttribute("userId");
         entryService.deleteEntry(entryId, userId);
 
