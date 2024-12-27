@@ -2,7 +2,7 @@ package sg.edu.nus.iss.vttp5a_ssf_mini_project.service;
 
 import java.io.StringReader;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import jakarta.json.Json;
@@ -12,14 +12,22 @@ import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Profile;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
 
 @Service
-public class HomeService {
+public class ProfileService {
 
-    @Autowired
-    HashRepo profileRepo;
+    private final HashRepo profileRepo;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public ProfileService(HashRepo profileRepo, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.profileRepo = profileRepo;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     final String profileRedisKey = "profiles";
 
     public void saveProfile(Profile p) {
+        // encoding pw
+        p.setPassword(bCryptPasswordEncoder.encode(p.getPassword()));
+
         JsonObject profileObject = Json.createObjectBuilder()
                 .add("id", p.getId())
                 .add("name", p.getName())
@@ -36,6 +44,7 @@ public class HomeService {
 
     public Profile getProfileByEmail(String email) {
         String profileString = profileRepo.getFieldValue(profileRedisKey, email);
+       
         return jsonToProfile(profileString);
     }
 

@@ -20,8 +20,9 @@
         <button type="submit">Filter</button>
         <a th:href="@{/entries/history}">Clear filter</a>
     </form>
-    <p th:if="${#lists.isEmpty(entries)}">There are no entries in the specified date range! <br>
+    <p th:if="${param != null}" th:unless="${param.isEmpty()}">There are no entries in the specified date range! <br>
     Please try another range!</p>
+    <p th:if="${#lists.isEmpty(entries)}" th:unless="${!param.isEmpty()}">You have no past entries yet! Begin your journey by creating a new entry!</p>
     <table>
         <thead>
             <tr>

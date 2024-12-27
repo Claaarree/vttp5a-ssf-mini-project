@@ -4,6 +4,7 @@ import java.util.Base64;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
@@ -17,56 +18,56 @@ import org.springframework.web.servlet.ModelAndView;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Profile;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.HomeService;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.service.ProfileService;
 
 @Controller
 @RequestMapping()
 public class HomeController {
 
     @Autowired
-    HomeService homeService;
+    ProfileService profileService;
 
-    @GetMapping
+    @GetMapping("/login")
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView("loginPage");
 
         return mav;
     }
 
-    @PostMapping("/login")
-    public ModelAndView authenticateLogin(@RequestBody MultiValueMap <String, String> login, 
-    HttpSession session) {
-        ModelAndView mav = new ModelAndView();
+    // @PostMapping("/login")
+    // public ModelAndView authenticateLogin(@RequestBody MultiValueMap <String, String> login, 
+    // HttpSession session) {
+    //     ModelAndView mav = new ModelAndView();
 
-        String email = login.getFirst("email");
-        String encodedPw = Base64.getEncoder()
-                .withoutPadding()
-                .encodeToString(login.getFirst("password").getBytes());
+    //     String email = login.getFirst("email");
+    //     String encodedPw = Base64.getEncoder()
+    //             .withoutPadding()
+    //             .encodeToString(login.getFirst("password").getBytes());
 
-        if(homeService.profileExists(email)) {
-            Profile p = homeService.getProfileByEmail(email);
-            if (p.getPassword().equals(encodedPw)) {
-                session.setAttribute("isAuthenticated", true);
-                session.setAttribute("userId", p.getId());
-                session.setAttribute("username", p.getName());
+    //     if(homeService.profileExists(email)) {
+    //         Profile p = homeService.getProfileByEmail(email);
+    //         if (p.getPassword().equals(encodedPw)) {
+    //             session.setAttribute("isAuthenticated", true);
+    //             session.setAttribute("userId", p.getId());
+    //             session.setAttribute("username", p.getName());
             
-                mav.setViewName("redirect:/home");
-            }else {
-                // add error for wrong password
-                String wrongPw = "The password you have entered is wrong... Please try again!";
-                mav.addObject("wrongPw", wrongPw);
-                mav.setViewName("loginPage");
-            }
+    //             mav.setViewName("redirect:/home");
+    //         }else {
+    //             // add error for wrong password
+    //             String wrongPw = "The password you have entered is wrong... Please try again!";
+    //             mav.addObject("wrongPw", wrongPw);
+    //             mav.setViewName("loginPage");
+    //         }
 
-        } else {
-            // add error for no profile exist, create new one
-            String noProfile = "It seems like you do not have an account! Please create one before trying to login!";
-            mav.addObject("noProfile", noProfile);
-            mav.setViewName("loginPage");
-        }
+    //     } else {
+    //         // add error for no profile exist, create new one
+    //         String noProfile = "It seems like you do not have an account! Please create one before trying to login!";
+    //         mav.addObject("noProfile", noProfile);
+    //         mav.setViewName("loginPage");
+    //     }
 
-        return mav;
-    }
+    //     return mav;
+    // }
     
     @GetMapping("/profiles/new")
     public ModelAndView showNewProfileForm() {
@@ -84,12 +85,12 @@ public class HomeController {
             mav.setViewName("profileForm");
         } else {
             p.setId(UUID.randomUUID().toString());
-            byte[] passwordPT = p.getPassword().getBytes();
-            String encodedPw = Base64.getEncoder().withoutPadding().encodeToString(passwordPT);
-            p.setPassword(encodedPw);
+            // byte[] passwordPT = p.getPassword().getBytes();
+            // String encodedPw = Base64.getEncoder().withoutPadding().encodeToString(passwordPT);
+            // p.setPassword(encodedPw);
             
             //save profile to redis
-            homeService.saveProfile(p);
+            profileService.saveProfile(p);
             // System.out.println(p.toString());
 
             mav.setViewName("redirect:/");
@@ -98,11 +99,13 @@ public class HomeController {
         return mav;
     }
 
-    @GetMapping("/home")
-    public ModelAndView homePage(HttpSession session) {
+    @GetMapping()
+    public ModelAndView homePage(HttpSession session, Authentication authentication) {
         ModelAndView mav = new ModelAndView("homePage");
-        String username = (String)session.getAttribute("username");
-        mav.addObject("username", username);
+        String name = authentication.getName();
+        Profile p = profileService.getProfileByEmail(name);
+        session.setAttribute("userId", p.getId());
+        mav.addObject("username", p.getName());
 
         return mav;
     }
