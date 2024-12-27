@@ -21,8 +21,14 @@ public class SecurityConfig {
             .formLogin(form -> form
                     .loginPage("/login")
                     .permitAll())
-            .authorizeHttpRequests(req -> req.requestMatchers("/profiles/**","/main.css").permitAll())
-            .authorizeHttpRequests(req -> req.anyRequest().authenticated());
+            .authorizeHttpRequests(req -> req
+                    .requestMatchers("/profiles/**", "/login/**")
+                    .permitAll()
+                    .requestMatchers("/SVG/**", "/Images/**", "/main.css")
+                    .permitAll())
+            .authorizeHttpRequests(req -> req.anyRequest().authenticated())
+            .logout(logout -> logout
+                    .invalidateHttpSession(true));
             
         return http.build();
     }

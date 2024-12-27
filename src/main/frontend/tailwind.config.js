@@ -2,8 +2,14 @@
 module.exports = {
   content: ["../resources/templates/**/*.{html,js}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'food-background': "url('/Images/background.jpg')"
+      }
+    },
   },
   plugins: [],
 }
+
+
 

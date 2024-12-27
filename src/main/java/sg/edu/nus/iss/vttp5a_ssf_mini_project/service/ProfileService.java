@@ -43,6 +43,7 @@ public class ProfileService {
     }
 
     public Profile getProfileByEmail(String email) {
+        System.out.println("email " + email);
         String profileString = profileRepo.getFieldValue(profileRedisKey, email);
        
         return jsonToProfile(profileString);
