@@ -57,9 +57,13 @@ public class FoodParser {
             allergensArrayBuilder.add(a);
         }
 
+        if(f.getQuantity() == null) {
+            f.setQuantity(0);
+        }
+
         JsonObject foodObject = Json.createObjectBuilder()
                 .add("id", String.valueOf(f.getId()))
-                .add("customId", f.getCustomId())
+                .add("customId", String.valueOf(f.getCustomId()))
                 .add("name", f.getName())
                 .add("type", f.getType())
                 .add("allergens", allergensArrayBuilder.build())
@@ -73,7 +77,7 @@ public class FoodParser {
                 .add("fat", f.getFat())
                 .add("url", String.valueOf(f.getUrl()))
                 .add("brand", f.getBrand())
-                .add("quantity", 0)
+                .add("quantity", f.getQuantity())
                 .build();
 
         return foodObject;

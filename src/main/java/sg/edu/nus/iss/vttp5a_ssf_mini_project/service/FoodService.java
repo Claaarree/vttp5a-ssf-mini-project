@@ -79,10 +79,9 @@ public class FoodService {
                 fd = foodParser.externalJsonToFoodById(res.getBody());
                         
             } else {
-                Cursor<java.util.Map.Entry<String, String>> foodFound = getCursor("*" + f.getCustomId(), userId);
-
-                String foodString = foodFound.next().getValue();
+                String foodString = getCustomFoodById(f.getCustomId(), userId);
                 fd = foodParser.jsonToFood(foodString);
+
             }
             fd.setQuantity(f.getQuantity());
             foodsConsumedDetails.add(fd);
@@ -110,6 +109,13 @@ public class FoodService {
             System.out.println("error in getting data from external api");
         }
         return res;
+    }
+
+    public String getCustomFoodById(String customId, String userId) {
+        Cursor<java.util.Map.Entry<String, String>> foodFound = getCursor("*" + customId, userId);
+        String foodString = foodFound.next().getValue();
+
+        return foodString;
     }
 
     public Food mapToFoodObject(MultiValueMap<String, String> map) {
