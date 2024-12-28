@@ -672,6 +672,18 @@ video {
   inset-inline-end: 0.625rem;
 }
 
+.top-52 {
+  top: 13rem;
+}
+
+.top-56 {
+  top: 14rem;
+}
+
+.top-64 {
+  top: 16rem;
+}
+
 .z-20 {
   z-index: 20;
 }
@@ -844,6 +856,11 @@ video {
 
 .table-auto {
   table-layout: auto;
+}
+
+.-rotate-90 {
+  --tw-rotate: -90deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .grid-cols-1 {
