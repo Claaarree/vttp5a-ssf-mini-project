@@ -6,71 +6,145 @@
     <title>Search</title>
     <link th:href="@{/main.css}" rel="stylesheet">
 </head>
-<body>
-    <form th:action="@{/search}" method="post">
-        <label for="searchTerm">Search for a food and/or brand:</label>
-        <input type="text" id="searchTerm" name="searchTerm">
-        <button type="submit">Search</button>
-        <span th:if="${blankError}">
-            <p th:utext="${blankError}"></p>
-        </span>
-    </form> 
-    <br>
-    <br>
-    <form th:action="@{/search/customFood}" method="post">
-        <label for="customSearch">Search for your custom food previously created here:</label>
-        <input type="text" id="customSearch" name="customSearch">
-        <button type="submit">Search</button>
-    </form>
-    <br>
-    <br>
-    <a th:href="@{/foods/new}">Can't find what you're looking for? Add your own custom food here!</a>
-    <span th:if="${foods}" th:unless="${#lists.isEmpty(foods)}">
-        <table>
-            <thead>
-                <tr>
-                    <th rowspan="2">Name</th>
-                    <th rowspan="2">Brand</th>
-                    <th rowspan="2">Allergens</th>
-                    <th colspan="2">Suitable for</th>
-                    <th rowspan="2">For more information</th>
-                    <th rowspan="2">Action</th>
-                </tr>
-                <tr>
-                    <th>Vegetarians</th>
-                    <th>Vegans</th>
-                </tr>
-            </thead>
-            <tbody>
-                <span th:each="food : ${foods}">
-                    <tr>
-                        <td th:utext="${food.name}"></td>
-                        <td th:utext="${food.brand}"></td>
-                        <td th:utext="${food.allergens}"></td>
-                        <td th:if="${#bools.isTrue(food.isVegetarian)}" th:utext="Y"></td>
-                        <td th:unless="${#bools.isTrue(food.isVegetarian)}" th:utext="N"></td>
-                        <td th:if="${#bools.isTrue(food.isVegan)}" th:utext="Y"></td>
-                        <td th:unless="${#bools.isTrue(food.isVegan)}" th:utext="N"></td>
-                        <td>
-                            <a th:href="@{${food.url}}" th:unless="${#strings.contains(food.url,'null')}" th:utext="${food.url}"></a>
-                            <span th:if="${#strings.contains(food.url,'null')}" th:utext="NA"></span>
-                        </td>
-                        <td>
-                            <form method="post" th:action="@{/entries/new/{entryId} (entryId=${entryId})}">
-                                <!-- <input th:value="${food}" name="foodToAdd" hidden> -->
-                                <button type="submit" th:value="${food}" name="foodToAdd">Add to Entry</button>
-                            </form>
-                        </td>
-                    </tr>
+<nav class="bg-lime-800 fixed w-full z-20 top-0 start-0 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a th:href="@{/}" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="/SVG/logo1.svg" class="h-12" alt="CPB Logo">
+        <span class="self-center text-3xl font-thin font-serif whitespace-nowrap text-yellow-600">CPB</span>
+    </a>
+    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <a th:href="@{/logout}">
+            <button type="button" class="text-white font-serif bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center">Logout</button>
+        </a>
+        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-sticky" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+      </button>
+    </div>
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-lime-800">
+        <li>
+            <a th:href="@{/}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">Home</a>
+        </li>
+        <li>
+            <a th:href="@{/search}" class="block py-2 px-3 text-white font-serif bg-yellow-100 rounded md:bg-transparent md:text-yellow-100 md:p-0" aria-current="page">Search Food</a>
+        </li>
+        <li>
+            <a th:href="@{/foods/new}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">New Custom Food</a>
+        </li>
+        <li>
+            <a th:href="@{/entries/new}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">New Entry</a>
+        </li>
+        <li>
+            <a th:href="@{/entries/history}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">History</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </nav>
+<body class="bg-food-background font-serif">
+    <section class="grid-cols-2 w-2/3 h-full relative top-9 left-64 rounded-lg bg-white bg-opacity-55 justify-center items-center">
+        <div class="py-8 px-4 mx-auto max-w-3xl lg:py-16">
+            <form class="max-w-md mx-auto" th:action="@{/search}" method="post">   
+                <label for="searchTerm" class="mb-2 font-medium text-gray-900 text-xl">Search for a food and/or brand:</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="search" id="searchTerm" name="searchTerm" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-50"/>
+                    <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-[#808000] hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                </div>
+                <div th:if="${blankError}">
+                    <p class="font-serif text-red-600" th:utext="${blankError}"></p>
+                </div>
+            </form>
+            <div class="py-4">
+                <form class="max-w-md mx-auto" th:action="@{/search/customFood}" method="post">   
+                    <label for="customSearch" class="mb-2 font-medium text-gray-900 text-xl">Search for your custom food previously created here:</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                            </svg>
+                        </div>
+                        <input type="search" id="customSearch" name="customSearch" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-50" required />
+                        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-[#808000] hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                    </div>
+                </form>                      
+                <a th:href="@{/foods/new}" class="hover:underline text-center">Can't find what you're looking for? Add your own custom food here!</a>
+            </div>
+            <span th:if="${foods}" th:unless="${#lists.isEmpty(foods)}">
+                <table class="max-w-full text-sm w-full text-center rtl:text-center text-gray-500 table-auto">
+                    <thead class="text-gray-700 bg-gray-50">
+                        <tr>
+                            <th rowspan="2" class="px-6 py-3">Name</th>
+                            <th rowspan="2" class="px-6 py-3">Brand</th>
+                            <th rowspan="2" class="px-6 py-3">Allergens</th>
+                            <th colspan="2" class="px-6 py-3">Suitable for</th>
+                            <th rowspan="2" class="px-6 py-3">For more information</th>
+                            <th rowspan="2" class="px-6 py-3">Action</th>
+                        </tr>
+                        <tr>
+                            <th class="px-4 py-3">Vegetarians</th>
+                            <th class="px-4 py-3">Vegans</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <span th:each="food : ${foods}">
+                            <tr class="bg-white border-b sm:rounded-lg">
+                                <td class="px-6 py-4" th:utext="${food.name}"></td>
+                                <td class="px-6 py-4" th:utext="${food.brand}"></td>
+                                <td class="px-6 py-4">
+                                    <ul th:each="a : ${food.allergens}">
+                                        <li th:utext="${a}"></li>
+                                    </ul>
+                                </td>
+                                <td class="px-6 py-4" th:if="${#bools.isTrue(food.isVegetarian)}">
+                                    <img src="/SVG/leaf-icon.svg" width="20px" height="20px">
+                                </td>
+                                <td class="px-6 py-4" th:unless="${#bools.isTrue(food.isVegetarian)}">
+                                    <img src="/SVG/cross-icon.svg" width="20px" height="20px">
+                                </td>
+                                <td class="px-6 py-4" th:if="${#bools.isTrue(food.isVegan)}">
+                                    <img src="/SVG/leaf-icon.svg" width="20px" height="20px">
+                                </td>
+                                <td class="px-6 py-4" th:unless="${#bools.isTrue(food.isVegan)}">
+                                    <img src="/SVG/cross-icon.svg" width="20px" height="20px">
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a th:href="@{${food.url}}" th:unless="${#strings.contains(food.url,'null')}">
+                                        <img src="/SVG/external-link-icon.svg" width="20px" height="20px">
+                                    </a>
+                                    <span th:if="${#strings.contains(food.url,'null')}" th:utext="NA"></span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <form method="post" th:action="@{/entries/new/{entryId} (entryId=${entryId})}">
+                                        <!-- <input th:value="${food}" name="foodToAdd" hidden> -->
+                                        <button type="submit" th:value="${food}" name="foodToAdd">Add to Entry</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </span>
+                    </tbody>
+                </table>
+                <span th:if=${pageNumber}>
+                    <span th:unless="${pageNumber} == '0'">
+                        <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
+                    </span>
+                    <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
                 </span>
-            </tbody>
-        </table>
-        <span th:if=${pageNumber}>
-            <span th:unless="${pageNumber} == '0'">
-                <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} - 1)}">Previous</a>
             </span>
-            <a th:href="@{/search/{searchTerm}/{pageNumber} (searchTerm=${searchTerm}, pageNumber=${pageNumber} + 1)}">Next</a>
-        </span>
-    </span>
+        </div>
+    </section>
+    
 </body>
+<footer>
+    <a href="https://www.fatsecret.com" class="fixed bottom-5 right-2.5">
+        <img src="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret.svg"/>
+    </a>
+</footer>
 </html>
