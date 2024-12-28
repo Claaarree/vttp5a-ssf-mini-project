@@ -6,41 +6,108 @@
     <title>Entry</title>
     <link th:href="@{/main.css}" rel="stylesheet">
 </head>
-<body>
-    <a th:href="@{/entries/edit/{entryId} (entryId = ${entry.entryId})}">Edit</a>
-    <a th:href="@{/entries/delete/{entryId} (entryId = ${entry.entryId})}">Delete</a>
-    <p>Entry ID: <span th:utext="${entry.entryId}"></span></p>
-    <p>Consumption Date: <span th:utext="${#dates.format(entry.consumptionDate, 'dd/MM/yyyy')}"></span></p>
-    <p>Consumption Time: <span th:utext="${entry.consumptionTime}"></span></p>
-    <p>Foods consumed</p>
-    <table>
-        <thead>
-            <tr>
-                <th rowspan="2">Name</th>
-                <th rowspan="2">Serving Size</th>
-                <th colspan="4">Macronutrients</th>
-                <th rowspan="2">Quantity</th>
-            </tr>
-            <tr>
-                <th>Calories</th>
-                <th>Carbohydrate</th>
-                <th>Protein</th>
-                <th>Fat</th>
-            </tr>
-        </thead>
-        <tbody>
-            <span th:each="food : ${entry.foodsConsumed}">
-                <tr>
-                    <td th:utext="${food.name}"></td>
-                    <td th:utext="${food.servingDescription}"></td>
-                    <td th:utext="${food.calories}"></td>
-                    <td th:utext="${food.carbohydrate}"></td>
-                    <td th:utext="${food.protein}"></td>
-                    <td th:utext="${food.fat}"></td>
-                    <td th:utext="${food.quantity}"></td>
-                </tr>
-            </span>
-        </tbody>
-    </table>
+<nav class="bg-lime-800 fixed w-full z-20 top-0 start-0 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a th:href="@{/}" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <img src="/SVG/logo1.svg" class="h-12" alt="CPB Logo">
+        <span class="self-center text-3xl font-thin font-serif whitespace-nowrap text-yellow-600">CPB</span>
+    </a>
+    <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <a th:href="@{/logout}">
+            <button type="button" class="text-white font-serif bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center">Logout</button>
+        </a>
+        <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-sticky" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+      </button>
+    </div>
+    <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-sticky">
+      <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-lime-800">
+        <li>
+            <a th:href="@{/}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">Home</a>
+        </li>
+        <li>
+            <a th:href="@{/search}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">Search Food</a>
+        </li>
+        <li>
+            <a th:href="@{/foods/new}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">New Custom Food</a>
+        </li>
+        <li>
+            <a th:href="@{/entries/new}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0" aria-current="page">New Entry</a>
+          </li>
+        <li>
+          <a th:href="@{/entries/history}" class="block py-2 px-3 text-white font-serif hover:bg-gray-100 md:hover:bg-transparent md:hover:text-yellow-200 md:p-0">History</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+  </nav>
+<body class="bg-food-background bg-cover bg-center font-serif">
+    <section class="grid-cols-1 w-2/3 h-full relative top-9 left-64 bg-white bg-opacity-55 justify-center items-center">
+        <div class="py-8 px-4 mx-auto max-w-4xl lg:py-16">
+            <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 font-serif items-center">
+                <div class="sm:col-span-2">
+                    <p class="block mb-2 font-medium text-4xl text-[#8b4513]">Entry ID: <br><span th:utext="${entry.entryId}"></span></p>
+                </div>
+                <div class="sm:col-span-2">
+                    <div class="flex-row inline-flex">
+                        <a class="flex px-4" th:href="@{/entries/edit/{entryId} (entryId = ${entry.entryId})}">
+                            <img src="/SVG/edit-icon.svg" height="25px" width="25px">
+                            <span class="self-center whitespace-nowrap">Edit</span>
+                        </a>
+                        <a class="flex px-4" th:href="@{/entries/delete/{entryId} (entryId = ${entry.entryId})}">
+                            <img src="/SVG/bin-icon.svg" height="25px" width="25px">
+                            Delete
+                        </a>
+                    </div>
+                </div>
+                <div class="sm:w-full">
+                    <p class="block mb-2 font-medium text-xl text-gray-900">Consumption Date: <span th:utext="${#dates.format(entry.consumptionDate, 'dd/MM/yyyy')}"></span></p>
+                </div>
+                <div class="sm:w-full">
+                    <p class="block mb-2 font-medium text-xl text-gray-900">Consumption Time: <span th:utext="${#temporals.format(entry.consumptionTime, 'hh:mm a')}"></span></p>
+                </div>
+                <table class="max-w-full w-full text-center rtl:text-center text-gray-500 table-auto">
+                    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white sm:rounded-lg">
+                        Foods Consumed:
+                    </caption>
+                    <thead class="text-xs text-gray-700 bg-gray-50">
+                        <tr>
+                            <th rowspan="2" class="px-6 py-3">Name</th>
+                            <th rowspan="2" class="px-6 py-3">Serving Size</th>
+                            <th colspan="4" class="px-6 py-3">Macronutrients</th>
+                            <th rowspan="2" class="px-6 py-3">Quantity</th>
+                        </tr>
+                        <tr>
+                            <th class="px-4 py-3">Calories</th>
+                            <th class="px-4 py-3">Carbohydrate</th>
+                            <th class="px-4 py-3">Protein</th>
+                            <th class="px-4 py-3">Fat</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <span th:each="food : ${entry.foodsConsumed}">
+                            <tr class="bg-white border-b sm:rounded-lg">
+                                <td th:utext="${food.name}" class="px-6 py-4"></td>
+                                <td th:utext="${food.servingDescription}" class="px-6 py-4"></td>
+                                <td th:utext="${food.calories}" class="px-6 py-4"></td>
+                                <td th:utext="${food.carbohydrate}" class="px-6 py-4"></td>
+                                <td th:utext="${food.protein}" class="px-6 py-4"></td>
+                                <td th:utext="${food.fat}" class="px-6 py-4"></td>
+                                <td th:utext="${food.quantity}" class="px-6 py-4"></td>
+                            </tr>
+                        </span>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </body>
+<footer>
+    <a href="https://www.fatsecret.com" class="fixed bottom-5 right-2.5">
+        <img src="https://platform.fatsecret.com/api/static/images/powered_by_fatsecret.svg"/>
+    </a>
+</footer>
 </html>
