@@ -154,7 +154,7 @@ public class EntryController {
             // System.out.println("entry: " + entry.getEntryId());
 
             e.setEntryId(entry.getEntryId());
-            if (e.getConsumptionDate().compareTo(entry.getConsumptionDate()) != 0 && entry.getConsumptionDate() != null){
+            if (entry.getConsumptionDate() != null && e.getConsumptionDate().compareTo(entry.getConsumptionDate()) != 0){
                 entryService.deleteEntry(e.getEntryId(), userId);
             }
             entryService.saveEntry(userId, e);

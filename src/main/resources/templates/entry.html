@@ -69,38 +69,40 @@
                 <div class="sm:w-full">
                     <p class="block mb-2 font-medium text-xl text-gray-900">Consumption Time: <span th:utext="${#temporals.format(entry.consumptionTime, 'hh:mm a')}"></span></p>
                 </div>
-                <table class="max-w-full w-full text-center rtl:text-center text-gray-500 table-auto">
-                    <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white sm:rounded-lg">
-                        Foods Consumed:
-                    </caption>
-                    <thead class="text-xs text-gray-700 bg-gray-50">
-                        <tr>
-                            <th rowspan="2" class="px-6 py-3">Name</th>
-                            <th rowspan="2" class="px-6 py-3">Serving Size</th>
-                            <th colspan="4" class="px-6 py-3">Macronutrients</th>
-                            <th rowspan="2" class="px-6 py-3">Quantity</th>
-                        </tr>
-                        <tr>
-                            <th class="px-4 py-3">Calories</th>
-                            <th class="px-4 py-3">Carbohydrate</th>
-                            <th class="px-4 py-3">Protein</th>
-                            <th class="px-4 py-3">Fat</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <span th:each="food : ${entry.foodsConsumed}">
-                            <tr class="bg-white border-b sm:rounded-lg">
-                                <td th:utext="${food.name}" class="px-6 py-4"></td>
-                                <td th:utext="${food.servingDescription}" class="px-6 py-4"></td>
-                                <td th:utext="${food.calories}" class="px-6 py-4"></td>
-                                <td th:utext="${food.carbohydrate}" class="px-6 py-4"></td>
-                                <td th:utext="${food.protein}" class="px-6 py-4"></td>
-                                <td th:utext="${food.fat}" class="px-6 py-4"></td>
-                                <td th:utext="${food.quantity}" class="px-6 py-4"></td>
+                <div class="sm:col-span-2">
+                    <table class="max-w-full w-full text-center rtl:text-center text-gray-500 table-auto">
+                        <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white sm:rounded-lg">
+                            Foods Consumed:
+                        </caption>
+                        <thead class="text-xs text-gray-700 bg-gray-50">
+                            <tr>
+                                <th rowspan="2" class="px-6 py-3">Name</th>
+                                <th rowspan="2" class="px-6 py-3">Serving Size</th>
+                                <th colspan="4" class="px-6 py-3">Macronutrients</th>
+                                <th rowspan="2" class="px-6 py-3">Quantity</th>
                             </tr>
-                        </span>
-                    </tbody>
-                </table>
+                            <tr>
+                                <th class="px-4 py-3">Calories</th>
+                                <th class="px-4 py-3">Carbohydrate</th>
+                                <th class="px-4 py-3">Protein</th>
+                                <th class="px-4 py-3">Fat</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <span th:each="food : ${entry.foodsConsumed}">
+                                <tr class="bg-white border-b sm:rounded-lg">
+                                    <td th:utext="${food.name}" class="px-6 py-4"></td>
+                                    <td th:utext="${food.servingDescription}" class="px-6 py-4"></td>
+                                    <td th:utext="${food.calories}" class="px-6 py-4"></td>
+                                    <td th:utext="${food.carbohydrate}" class="px-6 py-4"></td>
+                                    <td th:utext="${food.protein}" class="px-6 py-4"></td>
+                                    <td th:utext="${food.fat}" class="px-6 py-4"></td>
+                                    <td th:utext="${food.quantity}" class="px-6 py-4"></td>
+                                </tr>
+                            </span>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
