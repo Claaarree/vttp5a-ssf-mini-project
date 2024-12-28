@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rest Demo</title>
+    <link th:href="@{/main.css}" rel="stylesheet">
+</head>
+<nav class="bg-lime-800 fixed w-full z-20 top-0 start-0 dark:border-gray-600">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <a th:href="@{/}" class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img src="/SVG/logo1.svg" class="h-12" alt="CPB Logo">
+            <span class="self-center text-3xl font-thin font-serif whitespace-nowrap text-yellow-600">CPB</span>
+        </a>
+    </div>
+  </nav>
+  <!-- body starts here -->
+<body class="bg-food-background bg-cover font-serif">
+    <section class="grid-flow-row grid-rows-4 gap-y-4 justify-center justify-items-stretch relative top-24 left-64 w-2/3">
+        <div class="grid justify-center bg-white bg-opacity-70">
+            <p class="text-4xl text-[#8b4513]">Requests are HTTP "GET" from the base Url:</p>
+            <!-- TODO put deployed url here later -->
+        </div>
+        <!-- for list of food -->
+        <div class="grid bg-white bg-opacity-60">
+            <table class="max-w-full w-full text-center rtl:text-center text-gray-500 table-auto text-sm">
+                <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white bg-opacity-60 sm:rounded-lg">
+                    <p>To get a list of foods for a given search term</p>
+                     <!-- TODO put in example url -->
+                    <p>Example: </p>
+                </caption>
+                <thead class="text-xs text-gray-700 bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3">Parameters</th>
+                        <th class="px-6 py-3">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">path</td>
+                        <td class="px-6 py-4">/food/list</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">
+                            food
+                        </td>
+                        <td class="px-6 py-4">Name of desired food details</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">page_offset</td>
+                        <td class="px-6 py-4">Number of pages to offset the results by. "0" starts from the beginning of the results.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- for get by id -->
+        <div class="grid bg-white bg-opacity-60">
+            <table class="max-w-full w-full text-center rtl:text-center text-gray-500 table-auto text-sm">
+                <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white bg-opacity-60 sm:rounded-lg">
+                    <p>To get food details eaten by a particular user based on the food id</p>
+                    <!-- TODO put in example url -->
+                    <p>Example: </p>
+                </caption>
+                <thead class="text-xs text-gray-700 bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3">Parameters</th>
+                        <th class="px-6 py-3">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">path</td>
+                        <td class="px-6 py-4">/food/id</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">
+                            food_id
+                        </td>
+                        <td class="px-6 py-4">Food ID</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">user_id</td>
+                        <td class="px-6 py-4">User's ID</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- for get entries by date -->
+        <div class="grid bg-white bg-opacity-60">
+            <table class="max-w-full w-full text-center rtl:text-center text-gray-500 table-auto text-sm">
+                <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white bg-opacity-60 sm:rounded-lg">
+                    <p>To get entries of a particular user</p>
+                    <!-- TODO put in example url -->
+                    <p>Example: </p>
+                </caption>
+                <thead class="text-xs text-gray-700 bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3">Parameters</th>
+                        <th class="px-6 py-3">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">path</td>
+                        <td class="px-6 py-4">/entries</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">from</td>
+                        <td class="px-6 py-4">Optional. Gets entries from this date formatted yyyy/mm/dd</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">to</td>
+                        <td class="px-6 py-4">Optional. Gets entries from this date formatted yyyy/mm/dd</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>
+</html>

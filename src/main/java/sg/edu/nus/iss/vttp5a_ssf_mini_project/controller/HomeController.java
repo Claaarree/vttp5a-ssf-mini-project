@@ -33,41 +33,6 @@ public class HomeController {
 
         return mav;
     }
-
-    // @PostMapping("/login")
-    // public ModelAndView authenticateLogin(@RequestBody MultiValueMap <String, String> login, 
-    // HttpSession session) {
-    //     ModelAndView mav = new ModelAndView();
-
-    //     String email = login.getFirst("email");
-    //     String encodedPw = Base64.getEncoder()
-    //             .withoutPadding()
-    //             .encodeToString(login.getFirst("password").getBytes());
-
-    //     if(homeService.profileExists(email)) {
-    //         Profile p = homeService.getProfileByEmail(email);
-    //         if (p.getPassword().equals(encodedPw)) {
-    //             session.setAttribute("isAuthenticated", true);
-    //             session.setAttribute("userId", p.getId());
-    //             session.setAttribute("username", p.getName());
-            
-    //             mav.setViewName("redirect:/home");
-    //         }else {
-    //             // add error for wrong password
-    //             String wrongPw = "The password you have entered is wrong... Please try again!";
-    //             mav.addObject("wrongPw", wrongPw);
-    //             mav.setViewName("loginPage");
-    //         }
-
-    //     } else {
-    //         // add error for no profile exist, create new one
-    //         String noProfile = "It seems like you do not have an account! Please create one before trying to login!";
-    //         mav.addObject("noProfile", noProfile);
-    //         mav.setViewName("loginPage");
-    //     }
-
-    //     return mav;
-    // }
     
     @GetMapping("/profiles/new")
     public ModelAndView showNewProfileForm() {
@@ -106,6 +71,13 @@ public class HomeController {
         Profile p = profileService.getProfileByEmail(name);
         session.setAttribute("userId", p.getId());
         mav.addObject("username", p.getName());
+
+        return mav;
+    }
+
+    @GetMapping("/restDemo")
+    public ModelAndView restDemo() {
+        ModelAndView mav = new ModelAndView("restDemo");
 
         return mav;
     }
