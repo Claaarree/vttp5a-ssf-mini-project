@@ -45,7 +45,7 @@
     </div>
   </nav>
 <body class="bg-food-background bg-cover font-serif">
-    <section class="grid-cols-1 w-2/3 h-full relative top-9 left-64 bg-white bg-opacity-55 justify-center items-center text-serif">
+    <section class="grid-cols-1 w-2/3 h-full relative top-9 left-64 bg-white bg-opacity-55 justify-center items-center">
         <div class="py-8 px-4 mx-auto max-w-3xl lg:py-16">
             <form method="post" th:action="@{/entries/add}" th:object="${entry}">
                 <span class="mb-4 text-xl font-bold text-gray-900">Entry ID</span>
@@ -77,7 +77,7 @@
                             </thead>
                             <tbody>
                                 <span th:each="food, iterStat : *{foodsConsumed}">
-                                    <tr class="bg-white border-b">
+                                    <tr class="bg-white border-b sm:rounded-lg">
                                         <td th:utext="${food.name}" class="px-6 py-4"></td>
                                         <td th:utext="${food.servingDescription}" class="px-6 py-4"></td>
                                         <td th:utext="${food.calories}" class="px-6 py-4"></td>
@@ -95,7 +95,7 @@
                                 </span>
                             </tbody>
                         </table>
-                        <p th:if="${duplicateError}" th:text="${duplicateError}" class="font-serif text-red-600 bg-white pl-4 rounded-lg"></p>
+                        <p th:if="${duplicateError}" th:text="${duplicateError}" class="font-serif text-red-600 bg-white pl-4"></p>
                     </span>           
                 </div>
                 <div>
@@ -105,20 +105,14 @@
                 <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 font-serif">
                     <div class="sm:col-span-2">
                         <label for="consumptionDate" class="block mb-2 font-medium text-gray-900">Date of Consumption:</label>
-                        <input type="date" id="consumptionDate" th:field="*{consumptionDate}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        <input type="date" id="consumptionDate" th:field="*{consumptionDate}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                         <span th:if="${#fields.hasErrors('consumptionDate')}" th:errors="*{consumptionDate}" class="font-serif text-red-600"></span>
                     </div>
                     <div class="sm:col-span-2">
                         <label for="consumptionTime" class="block mb-2 font-medium text-gray-900">Time of Consumption:</label>
-                        <input type="time" id="consumptionTime" th:field="*{consumptionTime}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5">
+                        <input type="time" id="consumptionTime" th:field="*{consumptionTime}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                         <span th:if="${#fields.hasErrors('consumptionTime')}" th:errors="*{consumptionTime}" class="font-serif text-red-600"></span>
                     </div>
-                    <!-- <div> -->
-                        <!-- <label for="entryId">Entry ID:</label> -->
-                        <!-- figure out way to make this greyed out during styling -->
-                        <!-- maybe just hide it? -->
-                        <!-- <input type="text" id="entryId" th:field="*{entryId}" readonly> -->
-                    <!-- </div> -->
                 </div>
                 <br>
                 <button type="submit" class="text-white font-serif bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center">Save</button>

@@ -65,12 +65,6 @@
             <input type="time" id="consumptionTime" th:field="*{consumptionTime}">
             <span th:if="${#fields.hasErrors('consumptionTime')}" th:errors="*{consumptionTime}"></span>
         </div>
-        <div>
-            <label for="entryId">Entry ID:</label>
-            <!-- figure out way to make this greyed out during styling -->
-            <!-- maybe just hide it? -->
-            <input type="text" id="entryId" th:field="*{entryId}" readonly>
-        </div>
         <br>
         <button type="submit">Save</button>
     </form>

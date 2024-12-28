@@ -6,26 +6,37 @@
     <title>New Profile</title>
     <link th:href="@{/main.css}" rel="stylesheet">
 </head>
-<body>
-    <h1>Create a new profile!</h1>
-    <form method="post" th:action="@{/profiles/new}" th:object="${profile}">
-        <div>
-            <label for="name">Name: </label>
-            <input type="text" id="name" th:field="*{name}">
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+<body class="bg-food-background bg-cover bg-center font-serif h-screen">
+    <section class="grid-rows-2 w-2/3 absolute top-9 left-64 bg-white bg-opacity-55 justify-center items-center rounded-lg">
+        <div class="flex justify-left self-start text-3xl font-thin font-serif text-yellow-600 relative top-8 left-14">
+            <img class="w-9 h-9 mr-2" src="/SVG/logo.svg" alt="logo">
+            CPB    
         </div>
-        <div>
-            <label for="password">Password: </label>
-            <input type="password" id="password" th:field="*{password}">
-            <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        <div class="py-8 px-4 mx-auto max-w-3xl lg:py-16">
+            <h1 class="mb-4 text-3xl font-bold text-[#8b4513]">Create a new profile!</h1>
+            <form method="post" th:action="@{/profiles/new}" th:object="${profile}">
+                <div class="grid gap-4 sm:grid-cols-2 sm:gap-6 font-serif">
+                    <div class="sm:col-span-2">
+                        <label for="name" class="block mb-2 font-medium text-[#8b4513]">Name: </label>
+                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" id="name" th:field="*{name}" placeholder="Preferred Name" required>
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label for="password" class="block mb-2 font-medium text-[#8b4513]">Password: </label>
+                        <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" id="password" th:field="*{password}" placeholder="••••••••" required>
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label for="email" class="block mb-2 font-medium text-[#8b4513]">Email: </label>
+                        <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" id="email" th:field="*{email}" placeholder="name@company.com" required>
+                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+                </div>
+                <br>
+                <button type="submit" class="text-white font-serif bg-yellow-600 hover:bg-yellow-800 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center">Create</button>
+                <button type="reset" class="text-white font-serif bg-gray-600 hover:bg-yellow-800 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center">Reset</button>
+            </form>
         </div>
-        <div>
-            <label for="email">Email: </label>
-            <input type="text" id="email" th:field="*{email}">
-            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-        </div>
-        <button type="submit">Create!</button>
-        <button type="reset">Reset</button>
-    </form>
+    </section>
 </body>
 </html>

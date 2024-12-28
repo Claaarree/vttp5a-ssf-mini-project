@@ -150,7 +150,11 @@ public class EntryController {
             // System.out.println(e);
             // save entry to redis
             String userId = (String)session.getAttribute("userId");
-            if (e.getConsumptionDate() != entry.getConsumptionDate() && entry.getConsumptionDate() != null){
+            // System.out.println("e: " + e.getEntryId());
+            // System.out.println("entry: " + entry.getEntryId());
+
+            e.setEntryId(entry.getEntryId());
+            if (e.getConsumptionDate().compareTo(entry.getConsumptionDate()) != 0 && entry.getConsumptionDate() != null){
                 entryService.deleteEntry(e.getEntryId(), userId);
             }
             entryService.saveEntry(userId, e);
@@ -194,52 +198,52 @@ public class EntryController {
 
     @GetMapping("/edit/{entryId}")
     public ModelAndView editEntry(@PathVariable String entryId, HttpSession session) {
-        ModelAndView mav = new ModelAndView("editEntry");
+        ModelAndView mav = new ModelAndView("addEntry");
         String userId = (String)session.getAttribute("userId");
         Entry entryFound = entryService.getEntryById(entryId, userId);
         entryFound.setFoodsConsumed(foodService.requestForFoodsById(userId, entryFound));
-        System.out.println(entryFound.getFoodsConsumed() + " in edit");
+        // System.out.println(entryFound.getFoodsConsumed() + " in edit");
 
         session.setAttribute("entry", entryFound);
         mav.addObject("entry", entryFound);
         return mav;
     }
 
-    @PostMapping("/save/{entryId}")
-    public ModelAndView saveEditEntry(@Valid @ModelAttribute Entry e, BindingResult results, 
-    HttpSession session) {
-        ModelAndView mav = new ModelAndView();
-        // System.out.println("in save entry");
-        // System.out.println(e.getConsumptionDate() + "in save entry");
-        // System.out.println("after trying to print");
+    // @PostMapping("/save/{entryId}")
+    // public ModelAndView saveEditEntry(@Valid @ModelAttribute Entry e, BindingResult results, 
+    // HttpSession session) {
+    //     ModelAndView mav = new ModelAndView();
+    //     // System.out.println("in save entry");
+    //     // System.out.println(e.getConsumptionDate() + "in save entry");
+    //     // System.out.println("after trying to print");
 
-        // check if foods consumed is empty
-        if (e.getFoodsConsumed().isEmpty()) {
-            ObjectError noFoodError = new ObjectError("entry", 
-            """
-                The entry must have at least one food item. \n
-                Please delete the entry otherwise!
-                    """);
-            results.addError(noFoodError);
-        }
+    //     // check if foods consumed is empty
+    //     if (e.getFoodsConsumed().isEmpty()) {
+    //         ObjectError noFoodError = new ObjectError("entry", 
+    //         """
+    //             The entry must have at least one food item. \n
+    //             Please delete the entry otherwise!
+    //                 """);
+    //         results.addError(noFoodError);
+    //     }
 
-        if (results.hasErrors()){
-            mav.setViewName("editEntry");
-            System.out.println("in results has errors");
+    //     if (results.hasErrors()){
+    //         mav.setViewName("editEntry");
+    //         // System.out.println("in results has errors");
         
-        } else {
-            // TODO change redirect to homepage once set up or maybe a successfully saved page
-            mav.setViewName("redirect:/home");
+    //     } else {
+    //         // TODO change redirect to homepage once set up or maybe a successfully saved page
+    //         mav.setViewName("redirect:/");
             
-            System.out.println(e);
-            // save entry to redis
-            String userId = (String)session.getAttribute("userId");
-            entryService.saveEntry(userId, e);
+    //         // System.out.println(e);
+    //         // save entry to redis
+    //         String userId = (String)session.getAttribute("userId");
+    //         entryService.saveEntry(userId, e);
         
-        }
+    //     }
 
-        return mav;
-    }
+    //     return mav;
+    // }
 
     @GetMapping("/delete/{entryId}")
     public ModelAndView deleteEntry(@PathVariable String entryId, HttpSession session) {
