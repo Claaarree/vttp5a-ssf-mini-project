@@ -51,7 +51,7 @@ public class FoodController {
             mav.setViewName("foodForm");
         } else {
             f.setCustomId("CUSTOM" + UUID.randomUUID().toString());
-            System.out.println(f.toString());
+            // System.out.println(f.toString());
             String userId = (String)session.getAttribute("userId");
             foodService.saveCustomFood(f, userId);
 

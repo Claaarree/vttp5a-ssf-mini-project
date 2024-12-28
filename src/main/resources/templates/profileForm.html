@@ -8,10 +8,12 @@
 </head>
 <body class="bg-food-background bg-cover bg-center font-serif h-screen">
     <section class="grid-rows-2 w-2/3 absolute top-9 left-64 bg-white bg-opacity-55 justify-center items-center rounded-lg">
-        <div class="flex justify-left self-start text-3xl font-thin font-serif text-yellow-600 relative top-8 left-14">
-            <img class="w-9 h-9 mr-2" src="/SVG/logo.svg" alt="logo">
-            CPB    
-        </div>
+        <a th:href="@{/}">
+            <div class="flex justify-left self-start text-3xl font-thin font-serif text-yellow-600 relative top-8 left-14">
+                <img class="w-9 h-9 mr-2" src="/SVG/logo.svg" alt="logo">
+                CPB    
+            </div>
+        </a>
         <div class="py-8 px-4 mx-auto max-w-3xl lg:py-16">
             <h1 class="mb-4 text-3xl font-bold text-[#8b4513]">Create a new profile!</h1>
             <form method="post" th:action="@{/profiles/new}" th:object="${profile}">
