@@ -15,7 +15,7 @@ COPY .mvn .mvn
 RUN chmod a+x ./mvnw && ./mvnw package -Dmaven.test.skip=true
 
 # Stage 2
-FROM eclipse-temurin:23-jdk
+FROM eclipse-temurin:23-jre-jdk
 # better to use eclipse-temurin:23-jre-jdk
 
 ARG DEPLOY_DIR=/app

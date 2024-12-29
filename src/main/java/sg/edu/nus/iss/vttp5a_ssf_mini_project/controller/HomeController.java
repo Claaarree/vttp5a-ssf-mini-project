@@ -64,6 +64,7 @@ public class HomeController {
         String name = authentication.getName();
         Profile p = profileService.getProfileByEmail(name);
         session.setAttribute("userId", p.getId());
+        mav.addObject("userId", p.getId());
         mav.addObject("username", p.getName());
 
         return mav;

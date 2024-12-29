@@ -44,7 +44,7 @@
     </div>
     </div>
   </nav>
-<body class="bg-food-background bg-cover bg-center font-serif">
+<body class="bg-food-background bg-cover bg-center bg-scroll font-serif">
     <section class="grid-cols-2 w-2/3 h-full relative top-9 left-64 rounded-lg bg-white bg-opacity-55 justify-center items-center">
         <div class="py-8 px-4 mx-auto max-w-3xl lg:py-16">
             <h2 class="mb-4 text-4xl font-bold text-[#8b4513]">Please select the date range of the entries you would like to see!</h2>
@@ -64,9 +64,9 @@
                     </div>
                     <div class="w-full">
                         <p th:if="${date}" th:utext="${date}" class="font-serif text-red-600"></p>
-                        <p th:if="${#lists.isEmpty(entries) && param!=null}" class="font-serif text-red-600">There are no entries in the specified date range! <br>
+                        <p th:if="${!param.isEmpty() && #lists.isEmpty(entries)}" class="font-serif text-red-600">There are no entries in the specified date range! <br>
                         Please try another range!</p>
-                        <p th:if="${#lists.isEmpty(entries)}" th:unless="${!param.isEmpty()}" class="font-serif text-red-600">You have no past entries yet! Begin your journey by creating a new entry!</p>
+                        <p th:if="${#lists.isEmpty(entries)}" th:unless="${!param.isEmpty()}" class="font-serif text-[#8b4513]">You have no past entries yet! Begin your journey by creating a new entry!</p>
                     </div>
                 </div>
             </form>

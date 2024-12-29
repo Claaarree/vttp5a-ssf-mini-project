@@ -50,6 +50,14 @@
   <br>
   <br>
 <body class="bg-food-background bg-center bg-cover">
+  <button onclick=showDialog(true) class="text-white font-serif bg-yellow-600 hover:bg-yellow-800 focus:ring-4 focus:outline-none focus:ring-yellow-500 font-medium rounded-lg text-sm px-4 py-2 text-center">Click here to see your unique user ID!</button>
+        <dialog id="showUserId">
+          <div class="wrapper rounded-sm">
+            <p class="font-semibold">User ID:</p>
+            <p th:utext="${userId}"></p>
+            <button type="button" class="font-medium hover:underline" onclick=showDialog(false)>Back</button>
+          </div>
+        </dialog>
     <div class="relative h-32 w-full">
         <div class="absolute inset-x-0 top-5 h-16">
             <p class="text-4xl font-serif text-center">Hello <span th:utext="${username}"></span>, chiak pah buey? Welcome to your personal food diary!</p>
@@ -85,11 +93,19 @@
                 <p class="text-2xl">Click here to see what you've eaten in the past!</p>
                 <br>
                 <br>
-                <p>The only time you should ever look back is to see how far you've come.</p>
+                <p>The only time you should ever look back is to see how far you've come.<br>-Anonymous</p>
             </a>
         </div>
     </div>
     
+    <script>
+      const dialog = document.getElementById("showUserId")
+      const wrapper = document.querySelector(".wrapper")
+
+      const showDialog = (show) => show ? dialog.showModal() : dialog.close()
+
+      dialog.addEventListener("click", (e) => !wrapper.contains(e.target) && dialog.close())
+    </script>
 </body>
 <!-- footer -->
  <footer>

@@ -116,6 +116,7 @@ public class EntryController {
 
         // checking if food(s) are added
         if (entry.getFoodsConsumed().isEmpty()) {
+            // System.out.println("in no foods");
             ObjectError noFoodError = new ObjectError("entry", 
             "Please add at least one food item!");
             results.addError(noFoodError);

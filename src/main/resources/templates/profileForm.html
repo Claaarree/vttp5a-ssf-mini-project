@@ -21,17 +21,17 @@
                     <div class="sm:col-span-2">
                         <label for="name" class="block mb-2 font-medium text-[#8b4513]">Name: </label>
                         <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" id="name" th:field="*{name}" placeholder="Preferred Name" required>
-                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="font-serif text-red-600"></span>
                     </div>
                     <div class="sm:col-span-2">
                         <label for="password" class="block mb-2 font-medium text-[#8b4513]">Password: </label>
                         <input type="password" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" id="password" th:field="*{password}" placeholder="••••••••" required>
-                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+                        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="font-serif text-red-600"></span>
                     </div>
                     <div class="sm:col-span-2">
                         <label for="email" class="block mb-2 font-medium text-[#8b4513]">Email: </label>
                         <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5" id="email" th:field="*{email}" placeholder="name@company.com" required>
-                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="font-serif text-red-600"></span>
                     </div>
                 </div>
                 <br>

@@ -51,12 +51,12 @@
                 <span class="mb-4 text-xl font-bold text-gray-900">Entry ID</span>
                 <h2 class="mb-4 text-xl font-bold text-gray-900" th:utext="${entry.entryId}"></h2>
                 <p th:if="${#lists.isEmpty(entry.foodsConsumed)}" class="mb-4 text-2xl font-bold text-[#8b4513]">Start by adding a food you've eaten today!</p>
+                <span th:if="${#fields.hasErrors('global')}">
+                    <p th:each="err :${#fields.errors('global')}" th:utext="${err}" class="font-serif text-red-600"></p>
+                </span>
                 <div class="relative shadow-md sm:rounded-lg">
                     <span th:unless="${#lists.isEmpty(entry.foodsConsumed)}">
                         <table class="max-w-full w-full text-sm text-center rtl:text-center text-gray-500 table-auto">
-                            <span th:if="${#fields.hasErrors('global')}">
-                                <p th:each="err :${#fields.errors('global')}" th:utext="${err}" class="font-serif text-red-600"></p>
-                            </span>
                             <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white sm:rounded-lg">
                             Foods Consumed:
                             </caption>
