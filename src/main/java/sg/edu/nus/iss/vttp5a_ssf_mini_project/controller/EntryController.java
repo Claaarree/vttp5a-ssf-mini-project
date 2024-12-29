@@ -94,8 +94,10 @@ public class EntryController {
     @GetMapping("/remove/{foodName}")
     public ModelAndView removeFoodItem(@PathVariable String foodName, HttpSession session) {
         ModelAndView mav = new ModelAndView("redirect:/entries/new/{entryId}");
+        
         Entry entry = (Entry)session.getAttribute("entry");
         mav.addObject("entryId", entry.getEntryId());
+
 
         List<Food> foodsConsumedList = entry.getFoodsConsumed();
         foodsConsumedList.removeIf(f -> f.getName().equals(foodName));

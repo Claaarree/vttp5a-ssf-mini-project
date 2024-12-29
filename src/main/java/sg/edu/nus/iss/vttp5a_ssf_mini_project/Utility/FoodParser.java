@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility;
+package sg.edu.nus.iss.vttp5a_ssf_mini_project.utility;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -187,7 +187,8 @@ public class FoodParser {
     }
 
     public Food mapToFoodObject (MultiValueMap<String, String> map){
-        String [] foodToAdd = map.getFirst("foodToAdd").split(",");
+        System.out.println(map.getFirst("foodToAdd"));
+        String [] foodToAdd = map.getFirst("foodToAdd").split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)");
 
         Food f = new Food();
 
@@ -196,7 +197,7 @@ public class FoodParser {
             f.setServingId(Long.parseLong(foodToAdd[7]));
         }
         f.setCustomId(foodToAdd[1]);
-        f.setName(foodToAdd[2]);
+        f.setName(foodToAdd[2].replace("\"", ""));
         f.setType(foodToAdd[3]);
         List<String> allergensList = new ArrayList<>();
         if (foodToAdd[4].isEmpty()){

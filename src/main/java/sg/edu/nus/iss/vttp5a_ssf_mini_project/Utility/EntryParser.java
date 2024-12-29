@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility;
+package sg.edu.nus.iss.vttp5a_ssf_mini_project.utility;
 
 import java.io.StringReader;
 import java.text.ParseException;

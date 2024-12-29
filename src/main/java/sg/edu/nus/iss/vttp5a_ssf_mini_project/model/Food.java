@@ -199,7 +199,7 @@ public class Food {
         StringBuilder sb = new StringBuilder();
         sb.append(id + ",");
         sb.append(customId + ",");
-        sb.append(name + ",");
+        sb.append("\"" + name + "\",");
         sb.append(type + ",");
         for (String a : allergens){
             sb.append("|" + a);

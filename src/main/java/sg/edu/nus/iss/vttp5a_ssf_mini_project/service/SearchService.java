@@ -12,9 +12,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.FoodParser;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Url;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.utility.FoodParser;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.utility.Url;
 
 @Service
 public class SearchService {

@@ -14,11 +14,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.json.JsonObject;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.FoodParser;
-import sg.edu.nus.iss.vttp5a_ssf_mini_project.Utility.Url;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Entry;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.model.Food;
 import sg.edu.nus.iss.vttp5a_ssf_mini_project.repo.HashRepo;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.utility.FoodParser;
+import sg.edu.nus.iss.vttp5a_ssf_mini_project.utility.Url;
 
 @Service
 public class FoodService {

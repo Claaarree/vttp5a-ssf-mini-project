@@ -18,7 +18,7 @@
 <body class="bg-food-background bg-cover font-serif">
     <section class="grid-flow-row grid-rows-4 gap-y-4 justify-center justify-items-stretch content-center relative top-24 left-64 w-2/3">
         <div class="grid justify-center bg-white bg-opacity-70">
-            <p class="text-4xl text-[#8b4513]">Requests are HTTP "GET" from the base Url:</p>
+            <p class="text-4xl text-[#8b4513]">Requests are HTTP "GET" from the base Url:<br>vttp5a-ssf-mini-project-production.up.railway.app/api</p>
             <!-- TODO put deployed url here later -->
         </div>
         <!-- for list of food -->
@@ -27,7 +27,10 @@
                 <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white bg-opacity-60 sm:rounded-lg">
                     <p>To get a list of foods for a given search term</p>
                      <!-- TODO put in example url -->
-                    <p>Example: </p>
+                    <p>Example: <a class="hover:underline" th:href="@{https://vttp5a-ssf-mini-project-production.up.railway.app/api/food/list?food=salad&page_offset=0}">
+                        https://vttp5a-ssf-mini-project-production.up.railway.app/api/food/list?food=salad&page_offset=0
+                    </a>                        
+                    </p>
                 </caption>
                 <thead class="text-xs text-gray-700 bg-gray-50">
                     <tr>
@@ -59,7 +62,11 @@
                 <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white bg-opacity-60 sm:rounded-lg">
                     <p>To get food details eaten by a particular user based on the food id</p>
                     <!-- TODO put in example url -->
-                    <p>Example: </p>
+                    <p>Example: 
+                        <a class="hover:underline" th:href="@{https://vttp5a-ssf-mini-project-production.up.railway.app/api/food/id?user_Id=7b79604a-843d-4128-8125-cb33a6b4622b&food_id=2061496&food_Id=CUSTOMf88372e6-46b3-4a3f-84d7-fa88e0144261}">
+                            https://vttp5a-ssf-mini-project-production.up.railway.app/api/food/id?user_Id=7b79604a-843d-4128-8125-cb33a6b4622b&food_id=2061496&food_Id=CUSTOMf88372e6-46b3-4a3f-84d7-fa88e0144261
+                        </a>
+                    </p>
                 </caption>
                 <thead class="text-xs text-gray-700 bg-gray-50">
                     <tr>
@@ -73,13 +80,11 @@
                         <td class="px-6 py-4">/food/id</td>
                     </tr>
                     <tr class="bg-white border-b sm:rounded-lg">
-                        <td class="px-6 py-4">
-                            food_id
-                        </td>
+                        <td class="px-6 py-4">food_Id</td>
                         <td class="px-6 py-4">Food ID</td>
                     </tr>
                     <tr class="bg-white border-b sm:rounded-lg">
-                        <td class="px-6 py-4">user_id</td>
+                        <td class="px-6 py-4">user_Id</td>
                         <td class="px-6 py-4">User's ID</td>
                     </tr>
                 </tbody>
@@ -91,7 +96,11 @@
                 <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white bg-opacity-60 sm:rounded-lg">
                     <p>To get entries of a particular user</p>
                     <!-- TODO put in example url -->
-                    <p>Example: </p>
+                    <p>Example: 
+                        <a class="hover:underline" href="https://vttp5a-ssf-mini-project-production.up.railway.app/api/entries?user_Id=7b79604a-843d-4128-8125-cb33a6b4622b&from=2024-12-01&to=2024-12-10">
+                            https://vttp5a-ssf-mini-project-production.up.railway.app/api/entries?user_Id=7b79604a-843d-4128-8125-cb33a6b4622b&from=2024-12-01&to=2024-12-10
+                        </a>   
+                    </p>
                 </caption>
                 <thead class="text-xs text-gray-700 bg-gray-50">
                     <tr>
@@ -105,12 +114,16 @@
                         <td class="px-6 py-4">/entries</td>
                     </tr>
                     <tr class="bg-white border-b sm:rounded-lg">
+                        <td class="px-6 py-4">user_Id</td>
+                        <td class="px-6 py-4">User ID</td>
+                    </tr>
+                    <tr class="bg-white border-b sm:rounded-lg">
                         <td class="px-6 py-4">from</td>
-                        <td class="px-6 py-4">Optional. Gets entries from this date formatted yyyy/mm/dd</td>
+                        <td class="px-6 py-4">Optional. Gets entries from this date formatted yyyy-mm-dd</td>
                     </tr>
                     <tr class="bg-white border-b sm:rounded-lg">
                         <td class="px-6 py-4">to</td>
-                        <td class="px-6 py-4">Optional. Gets entries from this date formatted yyyy/mm/dd</td>
+                        <td class="px-6 py-4">Optional. Gets entries from this date formatted yyyy-mm-dd</td>
                     </tr>
                 </tbody>
             </table>
