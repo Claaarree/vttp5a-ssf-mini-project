@@ -22,7 +22,7 @@ public class SecurityConfig {
                     .loginPage("/login")
                     .permitAll())
             .authorizeHttpRequests(req -> req
-                    .requestMatchers("/profiles/**", "/login/**", "/api/**", "/restDemo")
+                    .requestMatchers("/profiles/**", "/login/**", "/api/**", "/restDemo", "/error")
                     .permitAll()
                     .requestMatchers("/SVG/**", "/Images/**", "/main.css")
                     .permitAll())

@@ -660,14 +660,6 @@ video {
   top: 2.25rem;
 }
 
-.top-3 {
-  top: 0.75rem;
-}
-
-.top-36 {
-  top: 9rem;
-}
-
 .z-20 {
   z-index: 20;
 }
@@ -1034,14 +1026,6 @@ video {
 
 .bg-cover {
   background-size: cover;
-}
-
-.bg-contain {
-  background-size: contain;
-}
-
-.bg-auto {
-  background-size: auto;
 }
 
 .bg-scroll {
@@ -1428,14 +1412,6 @@ video {
 }
 
 @media (min-width: 768px) {
-  .md\:top-24 {
-    top: 6rem;
-  }
-
-  .md\:left-64 {
-    left: 16rem;
-  }
-
   .md\:order-1 {
     order: 1;
   }
@@ -1528,18 +1504,6 @@ video {
 }
 
 @media (min-width: 1024px) {
-  .lg\:left-9 {
-    left: 2.25rem;
-  }
-
-  .lg\:left-96 {
-    left: 24rem;
-  }
-
-  .lg\:top-36 {
-    top: 9rem;
-  }
-
   .lg\:py-0 {
     padding-top: 0px;
     padding-bottom: 0px;
